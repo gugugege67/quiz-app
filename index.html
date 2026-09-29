@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover, interactive-widget=resizes-content, user-scalable=no">
+<meta name="theme-color" content="#6366f1" id="themeColorMeta">
+
+<!-- ============ PWA ============ -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Карточки">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<title>Карточки заданий</title>
+<script>
+  (function() {
+    const saved = localStorage.getItem('quiz_theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<style>
+  :root,
+  [data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #ddd6fe 100%);
+    --surface: #ffffff;
+    --surface-2: #f7fafc;
+    --surface-hover: #f1f5f9;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e0;
+    --text: #1a202c;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --text-on-color: #ffffff;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-active: #4338ca;
+    --primary-soft: #eef2ff;
+    --secondary: #94a3b8;
+    --secondary-hover: #64748b;
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-soft: #d1fae5;
+    --success-text: #065f46;
+    --error: #ef4444;
+    --error-soft: #fee2e2;
+    --error-text: #991b1b;
+    --warning: #f59e0b;
+    --warning-soft: #fef3c7;
+    --warning-text: #92400e;
+    --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.12);
+    --shadow-hover: 0 12px 32px rgba(15, 23, 42, 0.16);
+    --input-bg: #ffffff;
+    --progress-bg: #e2e8f0;
+    --header-text: #1e293b;
+    --header-shadow: none;
+    --review-bg: #f8fafc;
+    --overlay-bg: rgba(15, 23, 42, 0.6);
+    --flip-front: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    --flip-back: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    --quiz-correct-bg: #d1fae5;
+    --quiz-correct-border: #10b981;
+    --quiz-correct-text: #065f46;
+    --quiz-wrong-bg: #fee2e2;
+    --quiz-wrong-border: #ef4444;
+    --quiz-wrong-text: #991b1b;
+  }
+
+  [data-theme="dark"] {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #2e1065 100%);
+    --surface: #1e293b;
+    --surface-2: #263449;
+    --surface-hover: #334155;
+    --border: #334155;
+    --border-strong: #475569;
+    --text: #f1f5f9;
+    --text-secondary: #cbd5e0;
+    --text-muted: #94a3b8;
+    --text-on-color: #ffffff;
+    --primary: #818cf8;
+    --primary-hover: #6366f1;
+    --primary-active: #4f46e5;
+    --primary-soft: #1e1b4b;
+    --secondary: #64748b;
+    --secondary-hover: #475569;
+    --danger: #f87171;
+    --danger-hover: #ef4444;
+    --success: #34d399;
+    --success-hover: #10b981;
+    --success-soft: #064e3b;
+    --success-text: #a7f3d0;
+    --error: #f87171;
+    --error-soft: #7f1d1d;
+    --error-text: #fecaca;
+    --warning: #fbbf24;
+    --warning-soft: #78350f;
+    --warning-text: #fde68a;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.6);
+    --input-bg: #0f172a;
+    --progress-bg: #334155;
+    --header-text: #ffffff;
+    --header-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    --review-bg: #0f172a;
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --flip-front: linear-gradient(135deg, #1e293b 0%, #263449 100%);
+    --flip-back: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    --quiz-correct-bg: #064e3b;
+    --quiz-correct-border: #34d399;
+    --quiz-correct-text: #a7f3d0;
+    --quiz-wrong-bg: #7f1d1d;
+    --quiz-wrong-border: #f87171;
+    --quiz-wrong-text: #fecaca;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    height: 100%;
+  }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    background: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: var(--app-height, 100dvh);
+    padding: 16px;
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    font-size: 16px;
+    overscroll-behavior-y: contain;
+    transition: background 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  input, textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; width: 100%; }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: env(safe-area-inset-top);
+  }
+  h1 {
+    color: var(--header-text);
+    font-size: 22px;
+    line-height: 1.3;
+    text-shadow: var(--header-shadow);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    transition: color 0.3s ease;
+  }
+
+  .theme-toggle {
+    position: relative;
+    width: 62px;
+    height: 32px;
+    background: var(--surface);
+    border-radius: 32px;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    padding: 0;
+    min-height: auto;
+    flex-shrink: 0;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .theme-toggle:hover { background: var(--surface); border-color: var(--primary); transform: none; }
+  .theme-toggle:active { transform: scale(0.96); }
+  .theme-toggle .toggle-knob {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  [data-theme="dark"] .theme-toggle .toggle-knob {
+    transform: translateX(30px);
+    background: linear-gradient(135deg, #818cf8, #6366f1);
+  }
+
+  .panel {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .panel h2 {
+    font-size: 17px;
+    margin-bottom: 14px;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+  }
+
+  input, textarea, button {
+    font-family: inherit;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    padding: 13px 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, background 0.3s, color 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--input-bg);
+    color: var(--text);
+  }
+  input::placeholder, textarea::placeholder { color: var(--text-muted); }
+  input:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+  }
+  textarea { resize: vertical; min-height: 70px; font-family: inherit; }
+  input { min-height: 48px; }
+
+  .row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .row > * { flex: 1; min-width: 200px; }
+
+  button {
+    background: var(--primary);
+    color: var(--text-on-color);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.15s;
+    min-height: 48px;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  button:hover { background: var(--primary-hover); }
+  button:active { background: var(--primary-active); transform: scale(0.98); }
+  button.secondary { background: var(--secondary); color: var(--text-on-color); }
+  button.secondary:hover { background: var(--secondary-hover); }
+  button.danger { background: var(--danger); }
+  button.danger:hover { background: var(--danger-hover); }
+  button.success { background: var(--success); }
+  button.success:hover { background: var(--success-hover); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .menu-panel {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+  }
+  .menu-panel h2 {
+    font-size: 17px;
+    margin-bottom: 14px;
+    color: var(--text-secondary);
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 14px;
+    border: 2px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s;
+    min-height: 72px;
+    width: 100%;
+    font-family: inherit;
+    line-height: 1.3;
+  }
+  .menu-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .menu-btn:active { transform: translateY(0) scale(0.98); }
+  .menu-btn .menu-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-soft);
+  }
+  .menu-btn .menu-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .menu-btn .menu-title { font-weight: 700; font-size: 15px; }
+  .menu-btn .menu-sub { font-weight: 400; font-size: 12px; color: var(--text-muted); }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border-top: 5px solid var(--primary);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.3s, border-color 0.3s;
+  }
+  .card .question {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text);
+    flex-grow: 1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+  }
+  .card textarea { min-height: 60px; margin-bottom: 12px; font-size: 16px; }
+  .card .btn-group { display: flex; gap: 8px; margin-bottom: 10px; }
+  .card .btn-group button { padding: 12px 10px; font-size: 14px; flex: 1; }
+  .card-actions { display: flex; gap: 8px; margin-top: auto; }
+  .card-actions button { flex: 1; padding: 11px; font-size: 14px; min-height: 44px; }
+
+  .result {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: none;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+  }
+  .result.correct {
+    background: var(--success-soft); color: var(--success-text);
+    border-left: 4px solid var(--success); display: block;
+  }
+  .result.incorrect {
+    background: var(--error-soft); color: var(--error-text);
+    border-left: 4px solid var(--error); display: block;
+  }
+  .empty {
+    text-align: center; color: var(--header-text);
+    padding: 40px 20px; font-size: 16px;
+    opacity: 0.9; line-height: 1.5;
+  }
+
+  .toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
+  }
+  .stats {
+    color: var(--header-text); font-size: 14px; font-weight: 600;
+    text-shadow: var(--header-shadow); line-height: 1.4;
+  }
+
+  .settings-bar {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .settings-bar .label {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: var(--text-secondary);
+    font-weight: 600; cursor: pointer; user-select: none;
+    flex: 1; min-width: 200px;
+  }
+  .settings-bar .label > span:last-child { flex: 1; min-width: 0; }
+  .switch {
+    position: relative; display: inline-block;
+    width: 50px; height: 28px; flex-shrink: 0;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; min-height: 0; }
+  .slider {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--border-strong);
+    border-radius: 26px; transition: 0.3s;
+  }
+  .slider:before {
+    position: absolute; content: "";
+    height: 22px; width: 22px;
+    left: 3px; bottom: 3px;
+    background-color: #ffffff; border-radius: 50%;
+    transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .switch input:checked + .slider { background-color: var(--primary); }
+  .switch input:checked + .slider:before { transform: translateX(22px); }
+  .settings-hint { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 2px; line-height: 1.3; }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-bg);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    animation: fadeIn 0.2s ease;
+    overscroll-behavior: contain;
+  }
+  .modal-overlay.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 24px;
+    max-width: 460px;
+    width: 100%;
+    max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .modal h2 { font-size: 20px; margin-bottom: 6px; color: var(--text); font-weight: 700; }
+  .modal .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+
+  .timer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .timer-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    background: var(--surface);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .timer-option:active { transform: scale(0.99); }
+  .timer-option.selected { border-color: var(--primary); background: var(--primary-soft); }
+  .timer-option input[type="radio"] {
+    width: 20px; height: 20px;
+    min-width: 20px; min-height: 20px;
+    margin-top: 2px;
+    accent-color: var(--primary);
+    cursor: pointer; flex-shrink: 0;
+    padding: 0; border: none; background: transparent;
+  }
+  .timer-option .opt-content { flex: 1; min-width: 0; }
+  .timer-option .opt-title {
+    font-weight: 600; color: var(--text); font-size: 15px;
+    margin-bottom: 3px; display: flex; align-items: center;
+    gap: 6px; flex-wrap: wrap;
+  }
+  .timer-option .opt-desc { font-size: 13px; color: var(--text-muted); line-height: 1.35; }
+
+  .time-input-block {
+    display: none; margin-top: 12px; padding-top: 12px;
+    border-top: 1px dashed var(--border);
+  }
+  .time-input-block.visible { display: block; }
+  .time-input-block label {
+    display: block; font-size: 13px; color: var(--text-secondary);
+    margin-bottom: 6px; font-weight: 600;
+  }
+  .time-input-row { display: flex; align-items: center; gap: 8px; }
+  .time-input-row input {
+    text-align: center; font-weight: 700; font-size: 18px;
+    padding: 10px; min-height: 48px;
+  }
+  .time-input-row .unit { color: var(--text-muted); font-size: 14px; font-weight: 600; white-space: nowrap; }
+
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .modal-actions button { flex: 1; min-width: 130px; }
+
+  #testMode { display: none; }
+  #testMode.active { display: block; }
+  .test-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
+  }
+  .test-progress-text { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
+
+  .timer-display {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border-radius: 12px;
+    font-weight: 700; font-size: 17px;
+    font-variant-numeric: tabular-nums;
+    background: var(--surface-2); color: var(--text);
+    border: 2px solid var(--border);
+    transition: all 0.3s ease; white-space: nowrap;
+  }
+  .timer-display .timer-icon { font-size: 15px; }
+  .timer-display.warning {
+    background: var(--warning-soft); color: var(--warning-text);
+    border-color: var(--warning);
+    animation: timerPulse 1s ease-in-out infinite;
+  }
+  .timer-display.danger {
+    background: var(--error-soft); color: var(--error-text);
+    border-color: var(--error);
+    animation: timerPulse 0.6s ease-in-out infinite;
+  }
+  @keyframes timerPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+  .progress-bar {
+    width: 100%; height: 10px; background: var(--progress-bg);
+    border-radius: 10px; overflow: hidden; margin-bottom: 20px;
+    transition: background 0.3s ease;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), #8b5cf6);
+    width: 0%; transition: width 0.35s ease; border-radius: 10px;
+  }
+  .test-question {
+    font-size: 20px; font-weight: 700; color: var(--text);
+    margin-bottom: 18px; white-space: pre-wrap;
+    word-wrap: break-word; overflow-wrap: anywhere; line-height: 1.4;
+  }
+  .test-answer-input { min-height: 80px; margin-bottom: 14px; font-size: 16px; }
+  .test-result {
+    padding: 14px; border-radius: 10px; font-size: 15px;
+    margin-bottom: 14px; display: none; line-height: 1.5;
+    word-wrap: break-word; overflow-wrap: anywhere;
+  }
+  .test-result.correct {
+    background: var(--success-soft); color: var(--success-text);
+    border-left: 4px solid var(--success); display: block;
+  }
+  .test-result.incorrect {
+    background: var(--error-soft); color: var(--error-text);
+    border-left: 4px solid var(--error); display: block;
+  }
+  .test-result.timeout {
+    background: var(--warning-soft); color: var(--warning-text);
+    border-left: 4px solid var(--warning); display: block;
+  }
+  .test-result.prompt-reverse {
+    display: block;
+    background: var(--primary-soft);
+    color: var(--text);
+    border-left: 4px solid var(--primary);
+    margin-bottom: 14px;
+  }
+  .test-result.prompt-reverse .prompt-label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; opacity: 0.7; margin-bottom: 6px;
+  }
+  .test-result.prompt-reverse .prompt-value {
+    font-size: 18px; font-weight: 600;
+    word-wrap: break-word; overflow-wrap: anywhere; line-height: 1.4;
+  }
+  .test-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+  .test-controls button { width: auto; flex: 1; min-width: 120px; }
+
+  .test-summary { text-align: center; }
+  .test-summary h2 { font-size: 22px; margin-bottom: 14px; color: var(--text); line-height: 1.3; }
+  .test-score {
+    font-size: 44px; font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 10px;
+  }
+  .test-summary-text { font-size: 16px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5; }
+  .test-summary-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .test-summary-actions button { width: auto; padding: 13px 22px; font-size: 15px; }
+
+  .test-review { margin-top: 22px; text-align: left; }
+  .test-review h3 { font-size: 16px; margin-bottom: 12px; color: var(--text-secondary); }
+  .review-item {
+    padding: 12px; border-radius: 10px; margin-bottom: 10px;
+    font-size: 14px; border-left: 4px solid; line-height: 1.5;
+    background: var(--review-bg);
+    word-wrap: break-word; overflow-wrap: anywhere;
+  }
+  .review-item.ok { border-color: var(--success); }
+  .review-item.bad { border-color: var(--error); }
+  .review-item.skip { border-color: var(--warning); }
+  .review-item .q { font-weight: 600; margin-bottom: 5px; color: var(--text); }
+  .review-item .u { color: var(--text-muted); margin-bottom: 2px; }
+  .review-item .a { color: var(--success); }
+  .review-item .type-tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 7px; border-radius: 6px;
+    background: var(--primary-soft); color: var(--primary);
+    margin-right: 6px; text-transform: uppercase;
+    letter-spacing: 0.3px; vertical-align: middle;
+  }
+
+  #viewMode { display: none; }
+  #viewMode.active { display: block; }
+  .flip-container {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 18px;
+  }
+  .flip-progress {
+    font-size: 15px; font-weight: 600;
+    color: var(--text-secondary); text-align: center;
+  }
+  .flip-scene {
+    width: 100%; max-width: 520px; height: 340px;
+    perspective: 1400px; cursor: pointer;
+  }
+  .flip-card {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .flip-card.flipped { transform: rotateY(180deg); }
+  .flip-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 20px; padding: 26px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    overflow-y: auto;
+    word-wrap: break-word; overflow-wrap: anywhere;
+  }
+  .flip-front { background: var(--flip-front); color: var(--text); }
+  .flip-back { background: var(--flip-back); color: var(--text); transform: rotateY(180deg); }
+  .flip-label {
+    position: absolute; top: 14px; left: 18px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.6px; text-transform: uppercase;
+    color: var(--text-muted); opacity: 0.8;
+  }
+  .flip-text {
+    font-size: 22px; font-weight: 700;
+    line-height: 1.35; max-width: 100%;
+  }
+  .flip-hint {
+    position: absolute; bottom: 14px; left: 0; right: 0;
+    text-align: center; font-size: 12px;
+    color: var(--text-muted); opacity: 0.75;
+  }
+  .flip-controls {
+    display: flex; gap: 10px;
+    width: 100%; max-width: 520px; flex-wrap: wrap;
+  }
+  .flip-controls button { flex: 1; min-width: 130px; padding: 14px; font-size: 15px; }
+  .flip-controls.hidden { display: none; }
+  .flip-controls-row {
+    display: flex; gap: 10px;
+    width: 100%; max-width: 520px; flex-wrap: wrap;
+  }
+  .flip-controls-row button { flex: 1; min-width: 100px; padding: 13px 12px; font-size: 14px; }
+  .flip-nav {
+    display: flex; justify-content: space-between;
+    gap: 10px; width: 100%; max-width: 520px;
+  }
+  .flip-nav button { flex: 1; padding: 12px; font-size: 15px; }
+
+  #quizMode { display: none; }
+  #quizMode.active { display: block; }
+  .quiz-question {
+    font-size: 22px; font-weight: 700; color: var(--text);
+    margin-bottom: 8px; line-height: 1.35;
+    white-space: pre-wrap;
+    word-wrap: break-word; overflow-wrap: anywhere;
+    text-align: center; padding: 14px 8px;
+  }
+  .quiz-question.prompt-reverse {
+    display: block;
+    background: var(--primary-soft);
+    border-radius: 14px;
+    border-left: 4px solid var(--primary);
+    text-align: left;
+    padding: 14px 18px;
+  }
+  .quiz-question.prompt-reverse .prompt-label {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    opacity: 0.7; margin-bottom: 6px; display: block;
+  }
+  .quiz-question.prompt-reverse .prompt-value {
+    font-size: 19px; font-weight: 700;
+    word-wrap: break-word; overflow-wrap: anywhere;
+    line-height: 1.4;
+  }
+  .quiz-subtitle {
+    font-size: 13px; color: var(--text-muted);
+    text-align: center; margin-bottom: 18px;
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .quiz-options {
+    display: flex; flex-direction: column;
+    gap: 12px; margin-bottom: 18px;
+  }
+  .quiz-option {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface-2);
+    color: var(--text);
+    cursor: pointer; font-size: 16px;
+    font-weight: 500; text-align: left;
+    transition: all 0.2s; font-family: inherit;
+    line-height: 1.35; width: 100%; min-height: 62px;
+    word-wrap: break-word; overflow-wrap: anywhere;
+  }
+  .quiz-option:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    transform: translateY(-1px);
+  }
+  .quiz-option:active:not(:disabled) { transform: scale(0.99); }
+  .quiz-option .opt-marker {
+    flex-shrink: 0; width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    font-size: 15px; transition: all 0.2s;
+  }
+  .quiz-option .opt-text { flex: 1; min-width: 0; }
+  .quiz-option.correct {
+    background: var(--quiz-correct-bg);
+    border-color: var(--quiz-correct-border);
+    color: var(--quiz-correct-text);
+  }
+  .quiz-option.correct .opt-marker {
+    background: var(--quiz-correct-border);
+    color: #fff;
+    border-color: var(--quiz-correct-border);
+  }
+  .quiz-option.wrong {
+    background: var(--quiz-wrong-bg);
+    border-color: var(--quiz-wrong-border);
+    color: var(--quiz-wrong-text);
+  }
+  .quiz-option.wrong .opt-marker {
+    background: var(--quiz-wrong-border);
+    color: #fff;
+    border-color: var(--quiz-wrong-border);
+  }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-feedback {
+    text-align: center; font-size: 15px;
+    font-weight: 600; margin-bottom: 14px;
+    padding: 10px; border-radius: 10px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: var(--success-soft); color: var(--success-text); }
+  .quiz-feedback.bad { background: var(--error-soft); color: var(--error-text); }
+  .quiz-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+  .quiz-controls button { flex: 1; min-width: 130px; padding: 14px; }
+
+  @media (max-width: 900px) {
+    .cards-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  }
+
+  @media (max-width: 640px) {
+    body {
+      padding: 12px;
+      padding-top: max(12px, env(safe-area-inset-top));
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      overscroll-behavior-y: none;
+    }
+    .topbar { margin-bottom: 14px; gap: 10px; }
+    h1 { font-size: 17px; line-height: 1.25; gap: 6px; }
+    .theme-toggle { width: 56px; height: 30px; }
+    .theme-toggle .toggle-knob { width: 22px; height: 22px; font-size: 12px; }
+    [data-theme="dark"] .theme-toggle .toggle-knob { transform: translateX(26px); }
+    .panel, .menu-panel { padding: 16px; border-radius: 14px; margin-bottom: 14px; }
+    .panel h2, .menu-panel h2 { font-size: 16px; margin-bottom: 12px; }
+    .menu-grid { grid-template-columns: 1fr; gap: 10px; }
+    .menu-btn { padding: 14px; min-height: 68px; gap: 12px; }
+    .menu-btn .menu-icon { width: 40px; height: 40px; font-size: 22px; }
+    .menu-btn .menu-title { font-size: 14px; }
+    .cards-grid { grid-template-columns: 1fr; gap: 12px; }
+    .card { padding: 16px; }
+    .card .question { font-size: 16px; margin-bottom: 12px; }
+    .card textarea { min-height: 56px; }
+    .card .btn-group { flex-direction: column; gap: 8px; }
+    .card .btn-group button { width: 100%; padding: 13px 10px; }
+    .card-actions { flex-direction: column; }
+    .card-actions button { width: 100%; padding: 13px; min-height: 46px; }
+    .row { flex-direction: column; gap: 10px; }
+    .row > * { min-width: 0; }
+    .toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+    .settings-bar { padding: 13px 14px; border-radius: 12px; }
+    .settings-bar .label { font-size: 13px; gap: 10px; min-width: 0; }
+    .switch { width: 46px; height: 26px; }
+    .slider:before { height: 20px; width: 20px; }
+    .switch input:checked + .slider:before { transform: translateX(20px); }
+    .test-header { gap: 8px; align-items: stretch; }
+    .test-progress-text { font-size: 14px; flex: 1; min-width: 100px; }
+    .timer-display { font-size: 15px; padding: 7px 12px; }
+    .test-header #exitTestBtn {
+      order: 3; width: 100% !important;
+      padding: 10px !important; font-size: 14px !important;
+      min-height: 44px;
+    }
+    .test-question { font-size: 17px; margin-bottom: 14px; }
+    .test-score { font-size: 36px; }
+    .test-summary h2 { font-size: 18px; }
+    .test-controls { flex-direction: column; gap: 8px; }
+    .test-controls button { width: 100%; padding: 14px; }
+    .test-summary-actions { flex-direction: column; gap: 8px; }
+    .test-summary-actions button { width: 100%; padding: 14px; }
+    .modal-overlay { padding: 8px; }
+    .modal {
+      padding: 20px 18px; border-radius: 18px;
+      max-height: calc(100dvh - 16px);
+    }
+    .modal h2 { font-size: 18px; }
+    .modal .subtitle { font-size: 13px; margin-bottom: 16px; }
+    .timer-option { padding: 13px; }
+    .timer-option .opt-title { font-size: 14px; }
+    .timer-option .opt-desc { font-size: 12px; }
+    .modal-actions { flex-direction: column-reverse; gap: 8px; }
+    .modal-actions button { width: 100%; min-width: 0; }
+    .test-review h3 { font-size: 15px; }
+    .review-item { padding: 11px; font-size: 13px; }
+    .flip-scene { height: 280px; max-width: 100%; }
+    .flip-face { padding: 20px 18px; border-radius: 16px; }
+    .flip-text { font-size: 19px; }
+    .flip-label { font-size: 10px; top: 12px; left: 14px; }
+    .flip-hint { font-size: 11px; bottom: 12px; }
+    .flip-controls button { width: 100%; flex: 0 0 100%; }
+    .flip-controls-row button { min-width: 0; padding: 12px 8px; font-size: 13px; }
+    .flip-nav button { padding: 12px; font-size: 14px; }
+    .quiz-question { font-size: 18px; padding: 10px 6px; }
+    .quiz-question.prompt-reverse { padding: 12px 14px; }
+    .quiz-question.prompt-reverse .prompt-value { font-size: 16px; }
+    .quiz-option { padding: 14px 14px; font-size: 15px; min-height: 58px; gap: 12px; }
+    .quiz-option .opt-marker { width: 30px; height: 30px; font-size: 14px; }
+    .quiz-controls { flex-direction: column; gap: 8px; }
+    .quiz-controls button { width: 100%; }
+  }
+
+  @media (max-width: 380px) {
+    body {
+      padding: 8px;
+      padding-top: max(8px, env(safe-area-inset-top));
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+    h1 { font-size: 15px; }
+    .theme-toggle { width: 52px; height: 28px; }
+    .theme-toggle .toggle-knob { width: 20px; height: 20px; font-size: 11px; }
+    [data-theme="dark"] .theme-toggle .toggle-knob { transform: translateX(24px); }
+    .panel, .menu-panel { padding: 13px; border-radius: 12px; }
+    .card { padding: 13px; }
+    .card .question { font-size: 15px; }
+    .test-question { font-size: 16px; }
+    .test-score { font-size: 32px; }
+    .modal { padding: 16px 14px; }
+    .flip-scene { height: 240px; }
+    .flip-text { font-size: 17px; }
+    .quiz-question { font-size: 17px; }
+    .quiz-option { font-size: 14px; padding: 13px 12px; }
+  }
+
+  @media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+    body { padding: 8px; }
+    .panel, .menu-panel { padding: 12px; margin-bottom: 10px; }
+    h1 { font-size: 15px; }
+    .test-header { margin-bottom: 8px; }
+    .progress-bar { margin-bottom: 12px; }
+    .test-question { font-size: 16px; margin-bottom: 10px; }
+    .test-answer-input { min-height: 60px; }
+    .flip-scene { height: 220px; }
+    .flip-text { font-size: 17px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+    html { scroll-behavior: auto; }
+    .flip-card { transition: none; }
+  }
+
+  body.theme-transition,
+  body.theme-transition * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+  }
+  body.theme-transition .flip-card {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Индикатор "офлайн" */
+  .offline-badge {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--warning);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 2000;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .offline-badge.show { display: block; }
+</style>
+</head>
+<body>
+
+<div class="offline-badge" id="offlineBadge">📶 Офлайн-режим</div>
+
+<div class="container">
+  <div class="topbar">
+    <h1>📚 Карточки заданий</h1>
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">
+      <span class="toggle-knob" id="themeKnob">☀️</span>
+    </button>
+  </div>
+
+  <div class="settings-bar">
+    <label class="label" for="resetToggle">
+      <span class="switch">
+        <input type="checkbox" id="resetToggle">
+        <span class="slider"></span>
+      </span>
+      <span>
+        Сбрасывать прогресс при обновлении
+        <div class="settings-hint" id="resetHint">Прогресс сохраняется между сессиями</div>
+      </span>
+    </label>
+  </div>
+
+  <div id="homeMode">
+    <div class="menu-panel">
+      <h2>🎮 Режимы</h2>
+      <div class="menu-grid">
+        <button class="menu-btn" id="btnViewMode">
+          <span class="menu-icon">📖</span>
+          <span class="menu-text">
+            <span class="menu-title">Просмотр</span>
+            <span class="menu-sub">Карточки-флипы: задание → ответ</span>
+          </span>
+        </button>
+        <button class="menu-btn" id="btnQuizMode">
+          <span class="menu-icon">🎯</span>
+          <span class="menu-text">
+            <span class="menu-title">Викторина</span>
+            <span class="menu-sub">4 варианта · прямой и обратный формат</span>
+          </span>
+        </button>
+        <button class="menu-btn" id="btnTestMode">
+          <span class="menu-icon">✍️</span>
+          <span class="menu-text">
+            <span class="menu-title">Тест</span>
+            <span class="menu-sub">Задание→ответ и ответ→задание вперемешку</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>➕ Добавить новую карточку</h2>
+      <textarea id="inputQuestion" placeholder="Введите вопрос или задание..." rows="3"></textarea>
+      <div class="row" style="margin-top: 12px;">
+        <input type="text" id="inputAnswer" placeholder="Правильный ответ..."
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button id="addBtn">Добавить карточку</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="stats" id="stats">Карточек: 0</div>
+      <button class="secondary" id="clearAllBtn" style="width: auto; padding: 12px 18px; font-size: 14px;">🗑 Очистить всё</button>
+    </div>
+
+    <div id="cardsContainer"></div>
+  </div>
+
+  <div id="viewMode">
+    <div class="panel" id="viewPanel"></div>
+  </div>
+
+  <div id="quizMode">
+    <div class="panel" id="quizPanel"></div>
+  </div>
+
+  <div id="testMode">
+    <div class="panel" id="testPanel"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="testSetupModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h2>✍️ Настройка теста</h2>
+    <p class="subtitle">Вопросы будут перемешаны: часть — задание→ответ, часть — ответ→задание.</p>
+
+    <div class="timer-options">
+      <label class="timer-option selected" data-mode="none">
+        <input type="radio" name="timerMode" value="none" checked>
+        <div class="opt-content">
+          <div class="opt-title">🚫 Без таймера</div>
+          <div class="opt-desc">Проходите в удобном темпе, без ограничений по времени.</div>
+        </div>
+      </label>
+
+      <label class="timer-option" data-mode="total">
+        <input type="radio" name="timerMode" value="total">
+        <div class="opt-content">
+          <div class="opt-title">⏱ Общее время на весь тест</div>
+          <div class="opt-desc">Одно ограничение на все вопросы. Когда время выйдет — тест завершится автоматически.</div>
+          <div class="time-input-block" id="totalTimeBlock">
+            <label for="totalMinutesInput">Время на весь тест (минуты):</label>
+            <div class="time-input-row">
+              <input type="number" id="totalMinutesInput" min="1" max="180" value="10" inputmode="numeric" pattern="[0-9]*">
+              <span class="unit">мин</span>
+            </div>
+          </div>
+        </div>
+      </label>
+
+      <label class="timer-option" data-mode="perQuestion">
+        <input type="radio" name="timerMode" value="perQuestion">
+        <div class="opt-content">
+          <div class="opt-title">⏳ Время на каждый вопрос</div>
+          <div class="opt-desc">Отдельный таймер для каждого задания. Когда истечёт — вопрос засчитывается как пропущенный.</div>
+          <div class="time-input-block" id="perQuestionTimeBlock">
+            <label for="perQuestionSecondsInput">Время на один вопрос (секунды):</label>
+            <div class="time-input-row">
+              <input type="number" id="perQuestionSecondsInput" min="5" max="600" value="30" inputmode="numeric" pattern="[0-9]*">
+              <span class="unit">сек</span>
+            </div>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div class="modal-actions">
+      <button class="secondary" id="cancelTestSetup">Отмена</button>
+      <button id="confirmTestSetup">▶ Начать</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'quiz_cards_v1';
+  const STATS_KEY   = 'quiz_stats_v1';
+  const RESET_KEY   = 'quiz_reset_on_reload';
+  const THEME_KEY   = 'quiz_theme';
+  const TIMER_KEY   = 'quiz_timer_settings';
+
+  let cards = [];
+  let stats = { correct: 0, incorrect: 0 };
+  let resetOnReload = false;
+
+  // ======================= PWA: service worker =======================
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('SW зарегистрирован:', reg.scope))
+        .catch(err => console.warn('SW ошибка:', err));
+    });
+  }
+
+  // Индикатор офлайн-режима
+  function updateOfflineBadge() {
+    const badge = document.getElementById('offlineBadge');
+    if (!badge) return;
+    if (!navigator.onLine) badge.classList.add('show');
+    else badge.classList.remove('show');
+  }
+  window.addEventListener('online', updateOfflineBadge);
+  window.addEventListener('offline', updateOfflineBadge);
+  updateOfflineBadge();
+
+  // ======================= PWA: высота приложения =======================
+  function setAppHeight() {
+    document.documentElement.style.setProperty('--app-height', window.innerHeight + 'px');
+  }
+  setAppHeight();
+  window.addEventListener('resize', setAppHeight);
+  window.addEventListener('orientationchange', () => setTimeout(setAppHeight, 200));
+
+  // ======================= Защита от случайного выхода (iOS) =======================
+  let edgeTouchStart = null;
+  document.addEventListener('touchstart', e => {
+    if (e.touches[0].clientX < 25) {
+      edgeTouchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (!edgeTouchStart) return;
+    const dx = e.changedTouches[0].clientX - edgeTouchStart.x;
+    const dy = Math.abs(e.changedTouches[0].clientY - edgeTouchStart.y);
+    // Свайп от левого края вправо — блокируем (иначе iOS выйдет из PWA)
+    if (dx > 60 && dy < 40) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    edgeTouchStart = null;
+  }, { passive: false });
+
+  // ======================= МОБИЛЬНАЯ АДАПТАЦИЯ =======================
+  document.addEventListener('touchstart', function(){}, { passive: true });
+
+  document.addEventListener('focusin', e => {
+    if (e.target.matches('input, textarea')) {
+      setTimeout(() => {
+        try { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (err) {}
+      }, 300);
+    }
+  });
+
+  document.addEventListener('dblclick', e => {
+    if (e.target.closest('button')) e.preventDefault();
+  });
+
+  function lockBodyScroll(lock) {
+    if (lock) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.overflow = '';
+      document.body.style.width = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+  }
+
+  // ======================= ТЕМА =======================
+  function getCurrentTheme() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function applyTheme(theme, animate) {
+    if (animate) {
+      document.body.classList.add('theme-transition');
+      setTimeout(() => document.body.classList.remove('theme-transition'), 350);
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('themeKnob').textContent = theme === 'dark' ? '🌙' : '☀️';
+    const meta = document.getElementById('themeColorMeta');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0f172a' : '#6366f1');
+  }
+  function toggleTheme() {
+    const next = getCurrentTheme() === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next, true);
+  }
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem(THEME_KEY)) applyTheme(e.matches ? 'dark' : 'light', true);
+    });
+  }
+  applyTheme(getCurrentTheme(), false);
+
+  // ======================= ЗАГРУЗКА / СОХРАНЕНИЕ =======================
+  function load() {
+    resetOnReload = localStorage.getItem(RESET_KEY) === 'true';
+    document.getElementById('resetToggle').checked = resetOnReload;
+    updateResetHint();
+
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (data && Array.isArray(data.cards)) cards = data.cards;
+    } catch (e) { console.warn('Ошибка загрузки карточек', e); }
+
+    if (resetOnReload) {
+      stats = { correct: 0, incorrect: 0 };
+      localStorage.removeItem(STATS_KEY);
+    } else {
+      try {
+        const s = JSON.parse(localStorage.getItem(STATS_KEY));
+        if (s) stats = { correct: s.correct || 0, incorrect: s.incorrect || 0 };
+      } catch (e) {}
+    }
+  }
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ cards }));
+    if (!resetOnReload) {
+      localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    } else {
+      localStorage.removeItem(STATS_KEY);
+    }
+  }
+  function updateResetHint() {
+    const hint = document.getElementById('resetHint');
+    if (resetOnReload) {
+      hint.textContent = '⚠ При обновлении прогресс (✅/❌) обнулится';
+      hint.style.color = 'var(--error)';
+    } else {
+      hint.textContent = 'Прогресс сохраняется между сессиями';
+      hint.style.color = 'var(--text-muted)';
+    }
+  }
+  function normalize(str) {
+    return str.toString().trim().toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/ё/g, 'е')
+      .replace(/[.,!?;:]/g, '');
+  }
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+  function formatTime(seconds) {
+    if (seconds < 0) seconds = 0;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function softMatch(userText, originalText) {
+    const userWords = extractKeywords(userText);
+    const origWords = extractKeywords(originalText);
+    if (origWords.length === 0) return false;
+    let matched = 0;
+    for (const w of origWords) {
+      if (userWords.some(uw => uw === w || uw.includes(w) || w.includes(uw))) matched++;
+    }
+    return (matched / origWords.length) >= 0.6;
+  }
+  function extractKeywords(text) {
+    return normalize(text).split(' ').filter(w => w.length >= 4);
+  }
+
+  // ======================= ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ =======================
+  const SCREENS = ['homeMode', 'viewMode', 'quizMode', 'testMode'];
+  function showScreen(id) {
+    SCREENS.forEach(s => {
+      const el = document.getElementById(s);
+      if (!el) return;
+      if (s === 'homeMode') el.style.display = (s === id) ? 'block' : 'none';
+      else el.classList.toggle('active', s === id);
+    });
+    if (id !== 'testMode') stopTimer();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ======================= ГЛАВНАЯ =======================
+  function render() {
+    const container = document.getElementById('cardsContainer');
+    container.innerHTML = '';
+    if (cards.length === 0) {
+      container.innerHTML = '<div class="empty">Пока нет карточек.<br>Добавьте первую! ✨</div>';
+    } else {
+      const grid = document.createElement('div');
+      grid.className = 'cards-grid';
+      cards.forEach(card => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.dataset.id = card.id;
+        el.innerHTML = `
+          <div class="question">${escapeHtml(card.question)}</div>
+          <textarea placeholder="Ваш ответ..." data-role="userAnswer" rows="2"
+                    autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+          <div class="result" data-role="result"></div>
+          <div class="btn-group">
+            <button data-action="check">✅ Проверить</button>
+            <button class="secondary" data-action="show">👁 Показать</button>
+          </div>
+          <div class="card-actions">
+            <button class="secondary" data-action="edit">✏ Изменить</button>
+            <button class="danger" data-action="delete">🗑 Удалить</button>
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+      container.appendChild(grid);
+    }
+    updateStats();
+  }
+  function updateStats() {
+    const total = stats.correct + stats.incorrect;
+    const percent = total ? Math.round(stats.correct / total * 100) : 0;
+    document.getElementById('stats').textContent =
+      `Карточек: ${cards.length}  |  ✅ ${stats.correct}  ❌ ${stats.incorrect}` +
+      (total ? `  (${percent}%)` : '');
+  }
+  document.getElementById('addBtn').addEventListener('click', () => {
+    const q = document.getElementById('inputQuestion').value.trim();
+    const a = document.getElementById('inputAnswer').value.trim();
+    if (!q || !a) { alert('Заполните вопрос и ответ!'); return; }
+    cards.push({ id: Date.now() + Math.random(), question: q, answer: a });
+    document.getElementById('inputQuestion').value = '';
+    document.getElementById('inputAnswer').value = '';
+    save(); render();
+    if (document.activeElement) document.activeElement.blur();
+  });
+  document.getElementById('cardsContainer').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const cardEl = btn.closest('.card');
+    const id = cardEl.dataset.id;
+    const card = cards.find(c => String(c.id) === String(id));
+    if (!card) return;
+    const action = btn.dataset.action;
+    const userAnswerEl = cardEl.querySelector('[data-role="userAnswer"]');
+    const resultEl = cardEl.querySelector('[data-role="result"]');
+
+    if (action === 'check') {
+      const userAnswer = userAnswerEl.value;
+      if (!userAnswer.trim()) {
+        resultEl.className = 'result incorrect';
+        resultEl.textContent = '⚠ Введите ответ.';
+        return;
+      }
+      const isCorrect = normalize(userAnswer) === normalize(card.answer);
+      if (isCorrect) {
+        resultEl.className = 'result correct';
+        resultEl.textContent = '✅ Правильно!';
+        stats.correct++;
+      } else {
+        resultEl.className = 'result incorrect';
+        resultEl.innerHTML = `❌ Неправильно. <br><strong>Правильный ответ:</strong> ${escapeHtml(card.answer)}`;
+        stats.incorrect++;
+      }
+      save(); updateStats();
+      if (document.activeElement) document.activeElement.blur();
+    }
+    if (action === 'show') {
+      resultEl.className = 'result correct';
+      resultEl.innerHTML = `💡 <strong>Ответ:</strong> ${escapeHtml(card.answer)}`;
+    }
+    if (action === 'delete') {
+      if (confirm('Удалить эту карточку?')) {
+        cards = cards.filter(c => String(c.id) !== String(id));
+        save(); render();
+      }
+    }
+    if (action === 'edit') {
+      const newQ = prompt('Редактировать вопрос:', card.question);
+      if (newQ === null) return;
+      const newA = prompt('Редактировать ответ:', card.answer);
+      if (newA === null) return;
+      if (!newQ.trim() || !newA.trim()) { alert('Поля не могут быть пустыми.'); return; }
+      card.question = newQ.trim();
+      card.answer = newA.trim();
+      save(); render();
+    }
+  });
+  document.getElementById('cardsContainer').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.matches('textarea[data-role="userAnswer"]') && !e.shiftKey) {
+      e.preventDefault();
+      e.target.closest('.card').querySelector('[data-action="check"]').click();
+    }
+  });
+  document.getElementById('clearAllBtn').addEventListener('click', () => {
+    if (cards.length === 0 && stats.correct === 0 && stats.incorrect === 0) return;
+    if (confirm('Удалить все карточки и сбросить статистику?')) {
+      cards = []; stats = { correct: 0, incorrect: 0 };
+      save(); render();
+    }
+  });
+  document.getElementById('resetToggle').addEventListener('change', e => {
+    resetOnReload = e.target.checked;
+    localStorage.setItem(RESET_KEY, String(resetOnReload));
+    if (resetOnReload) {
+      stats = { correct: 0, incorrect: 0 };
+      localStorage.removeItem(STATS_KEY);
+      save(); updateStats();
+    } else { save(); }
+    updateResetHint();
+  });
+
+  // ======================= РЕЖИМ ПРОСМОТРА =======================
+  let viewState = null;
+
+  function startViewMode() {
+    if (cards.length === 0) { alert('Сначала добавьте хотя бы одну карточку!'); return; }
+    viewState = {
+      queue: shuffle(cards),
+      index: 0,
+      known: 0,
+      unknown: 0
+    };
+    showScreen('viewMode');
+    renderViewPanel();
+    renderViewCard();
+  }
+
+  function renderViewPanel() {
+    const panel = document.getElementById('viewPanel');
+    panel.innerHTML = `
+      <div class="test-header" style="margin-bottom: 12px;">
+        <div class="test-progress-text" id="viewProgress">Карточка 1 из 1</div>
+        <button class="secondary" id="exitViewBtn" style="width: auto; padding: 10px 14px; font-size: 14px;">✖ Выйти</button>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="viewProgressBar" style="width: 0%"></div></div>
+
+      <div class="flip-container">
+        <div class="flip-scene" id="flipScene">
+          <div class="flip-card" id="flipCard">
+            <div class="flip-face flip-front">
+              <div class="flip-label">Задание</div>
+              <div class="flip-text" id="flipFrontText">—</div>
+              <div class="flip-hint">👆 Нажмите, чтобы перевернуть</div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="flip-label">Ответ</div>
+              <div class="flip-text" id="flipBackText">—</div>
+              <div class="flip-hint">👆 Нажмите, чтобы вернуться</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-controls hidden" id="flipKnowControls">
+          <button class="success" id="btnKnew">✅ Знал(а)</button>
+          <button class="danger" id="btnDidntKnow">❌ Не знал(а)</button>
+        </div>
+
+        <div class="flip-controls" id="flipRevealControls">
+          <button id="btnRevealAnswer">👁 Показать ответ</button>
+        </div>
+
+        <div class="flip-controls-row">
+          <button class="secondary" id="btnShuffleView">🔀 Перемешать</button>
+          <button class="secondary" id="btnRestartView">🔁 Заново</button>
+        </div>
+
+        <div class="flip-nav">
+          <button class="secondary" id="btnPrevView">← Назад</button>
+          <button class="secondary" id="btnNextView">Вперёд →</button>
+        </div>
+      </div>
+
+      <div class="stats" style="margin-top: 16px; text-align: center; color: var(--text-secondary); font-weight: 600;" id="viewStats">
+        ✅ 0 · ❌ 0
+      </div>
+    `;
+    bindViewEvents();
+  }
+
+  function bindViewEvents() {
+    const clone = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const c = el.cloneNode(true);
+      el.parentNode.replaceChild(c, el);
+      return c;
+    };
+
+    const flipScene = clone('flipScene');
+    const btnReveal = clone('btnRevealAnswer');
+    const btnKnew = clone('btnKnew');
+    const btnDidnt = clone('btnDidntKnow');
+    const btnPrev = clone('btnPrevView');
+    const btnNext = clone('btnNextView');
+    const exitBtn = clone('exitViewBtn');
+    const btnShuffle = clone('btnShuffleView');
+    const btnRestart = clone('btnRestartView');
+
+    if (flipScene) flipScene.addEventListener('click', flipCard);
+    if (btnReveal) btnReveal.addEventListener('click', revealAnswer);
+    if (btnKnew) btnKnew.addEventListener('click', () => markKnown(true));
+    if (btnDidnt) btnDidnt.addEventListener('click', () => markKnown(false));
+    if (btnPrev) btnPrev.addEventListener('click', prevViewCard);
+    if (btnNext) btnNext.addEventListener('click', nextViewCard);
+    if (exitBtn) exitBtn.addEventListener('click', () => exitViewMode());
+    if (btnShuffle) btnShuffle.addEventListener('click', () => {
+      if (!viewState) return;
+      viewState.queue = shuffle(viewState.queue);
+      viewState.index = 0;
+      renderViewCard();
+    });
+    if (btnRestart) btnRestart.addEventListener('click', () => {
+      if (!viewState) return;
+      viewState.index = 0;
+      viewState.known = 0;
+      viewState.unknown = 0;
+      renderViewCard();
+    });
+  }
+
+  function renderViewCard() {
+    if (!viewState) return;
+    const card = viewState.queue[viewState.index];
+    const total = viewState.queue.length;
+
+    document.getElementById('viewProgress').textContent = `Карточка ${viewState.index + 1} из ${total}`;
+    document.getElementById('viewProgressBar').style.width = `${Math.round((viewState.index / total) * 100)}%`;
+    document.getElementById('flipFrontText').textContent = card.question;
+    document.getElementById('flipBackText').textContent = card.answer;
+    document.getElementById('viewStats').textContent = `✅ ${viewState.known} · ❌ ${viewState.unknown}`;
+
+    const flipCard = document.getElementById('flipCard');
+    flipCard.classList.remove('flipped');
+
+    document.getElementById('flipRevealControls').classList.remove('hidden');
+    document.getElementById('flipKnowControls').classList.add('hidden');
+
+    document.getElementById('btnPrevView').disabled = viewState.index === 0;
+    document.getElementById('btnNextView').textContent =
+      viewState.index === total - 1 ? '🏁 Завершить' : 'Вперёд →';
+  }
+
+  function flipCard() {
+    if (!viewState) return;
+    document.getElementById('flipCard').classList.toggle('flipped');
+  }
+  function revealAnswer() {
+    document.getElementById('flipCard').classList.add('flipped');
+    document.getElementById('flipRevealControls').classList.add('hidden');
+    document.getElementById('flipKnowControls').classList.remove('hidden');
+  }
+  function markKnown(isKnown) {
+    if (!viewState) return;
+    if (isKnown) viewState.known++;
+    else viewState.unknown++;
+    nextViewCard();
+  }
+  function nextViewCard() {
+    if (!viewState) return;
+    if (viewState.index >= viewState.queue.length - 1) {
+      renderViewSummary();
+      return;
+    }
+    viewState.index++;
+    renderViewCard();
+  }
+  function prevViewCard() {
+    if (!viewState || viewState.index === 0) return;
+    viewState.index--;
+    renderViewCard();
+  }
+  function renderViewSummary() {
+    const total = viewState.queue.length;
+    const percent = total ? Math.round(viewState.known / total * 100) : 0;
+    let emoji = '😢', message = 'Попробуйте ещё раз!';
+    if (percent === 100) { emoji = '🏆'; message = 'Идеально!'; }
+    else if (percent >= 80) { emoji = '🎉'; message = 'Отличный результат!'; }
+    else if (percent >= 60) { emoji = '👍'; message = 'Хороший результат!'; }
+    else if (percent >= 40) { emoji = '🤔'; message = 'Неплохо.'; }
+
+    const panel = document.getElementById('viewPanel');
+    panel.innerHTML = `
+      <div class="test-summary">
+        <div style="font-size: 50px; margin-bottom: 10px;">${emoji}</div>
+        <h2>${message}</h2>
+        <div class="test-score">${viewState.known} / ${total}</div>
+        <div class="test-summary-text">
+          ✅ Знал(а): ${viewState.known}<br>
+          ❌ Не знал(а): ${viewState.unknown}<br>
+          Правильных: ${percent}%
+        </div>
+        <div class="test-summary-actions">
+          <button id="viewRestartBtn">🔄 Заново</button>
+          <button class="secondary" id="viewExitBtn">📚 К карточкам</button>
+        </div>
+      </div>
+    `;
+    panel.querySelector('#viewRestartBtn').addEventListener('click', () => {
+      viewState.index = 0;
+      viewState.known = 0;
+      viewState.unknown = 0;
+      viewState.queue = shuffle(viewState.queue);
+      renderViewPanel();
+      renderViewCard();
+    });
+    panel.querySelector('#viewExitBtn').addEventListener('click', () => exitViewMode());
+  }
+  function exitViewMode() {
+    viewState = null;
+    showScreen('homeMode');
+    render();
+  }
+  document.getElementById('btnViewMode').addEventListener('click', startViewMode);
+
+  // ======================= ВИКТОРИНА =======================
+  let quizState = null;
+
+  function startQuizMode() {
+    if (cards.length < 4) {
+      alert('Для викторины нужно минимум 4 карточки!');
+      return;
+    }
+    quizState = {
+      queue: shuffle(cards).map(card => ({
+        ...card,
+        type: Math.random() < 0.5 ? 'forward' : 'reverse'
+      })),
+      index: 0,
+      score: 0,
+      answered: false
+    };
+    showScreen('quizMode');
+    renderQuizPanel();
+    renderQuizQuestion();
+  }
+
+  function renderQuizPanel() {
+    const panel = document.getElementById('quizPanel');
+    panel.innerHTML = `
+      <div class="test-header" style="margin-bottom: 12px;">
+        <div class="test-progress-text" id="quizProgress">Вопрос 1 из 1</div>
+        <button class="secondary" id="exitQuizBtn" style="width: auto; padding: 10px 14px; font-size: 14px;">✖ Выйти</button>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="quizProgressBar" style="width: 0%"></div></div>
+
+      <div class="quiz-question" id="quizQuestion">—</div>
+      <div class="quiz-subtitle" id="quizSubtitle">Выберите правильный ответ</div>
+
+      <div class="quiz-options" id="quizOptions"></div>
+
+      <div class="quiz-feedback" id="quizFeedback"></div>
+
+      <div class="quiz-controls">
+        <button id="quizNextBtn" disabled>➡ Далее</button>
+        <button class="secondary" id="quizSkipBtn">Пропустить</button>
+      </div>
+    `;
+    document.getElementById('exitQuizBtn').addEventListener('click', exitQuizMode);
+    document.getElementById('quizNextBtn').addEventListener('click', nextQuizQuestion);
+    document.getElementById('quizSkipBtn').addEventListener('click', () => {
+      quizState.answered = true;
+      document.getElementById('quizSkipBtn').disabled = true;
+      nextQuizQuestion();
+    });
+  }
+
+  function renderQuizQuestion() {
+    if (!quizState) return;
+    const card = quizState.queue[quizState.index];
+    const total = quizState.queue.length;
+    const isReverse = card.type === 'reverse';
+
+    document.getElementById('quizProgress').textContent = `Вопрос ${quizState.index + 1} из ${total}`;
+    document.getElementById('quizProgressBar').style.width = `${Math.round((quizState.index / total) * 100)}%`;
+
+    const questionEl = document.getElementById('quizQuestion');
+    if (isReverse) {
+      questionEl.className = 'quiz-question prompt-reverse';
+      questionEl.innerHTML = `
+        <span class="prompt-label">Ответ</span>
+        <span class="prompt-value">${escapeHtml(card.answer)}</span>
+      `;
+      document.getElementById('quizSubtitle').textContent = 'Выберите задание, которое подходит к этому ответу';
+    } else {
+      questionEl.className = 'quiz-question';
+      questionEl.textContent = card.question;
+      document.getElementById('quizSubtitle').textContent = 'Выберите правильный ответ';
+    }
+
+    const others = cards.filter(c => String(c.id) !== String(card.id));
+    const shuffledOthers = shuffle(others);
+    const wrongOptions = shuffledOthers.slice(0, 3);
+
+    if (wrongOptions.length < 3) {
+      document.getElementById('quizOptions').innerHTML =
+        '<div class="empty" style="color:var(--text);">Для викторины нужно минимум 4 карточки.</div>';
+      return;
+    }
+
+    const options = shuffle([card, ...wrongOptions]);
+    const optionsEl = document.getElementById('quizOptions');
+    optionsEl.innerHTML = '';
+    options.forEach((opt, i) => {
+      const marker = String.fromCharCode(65 + i);
+      const optText = isReverse ? opt.question : opt.answer;
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.dataset.id = opt.id;
+      btn.dataset.correct = (String(opt.id) === String(card.id)) ? '1' : '0';
+      btn.innerHTML = `
+        <span class="opt-marker">${marker}</span>
+        <span class="opt-text">${escapeHtml(optText)}</span>
+      `;
+      btn.addEventListener('click', () => answerQuiz(btn, card));
+      optionsEl.appendChild(btn);
+    });
+
+    const feedback = document.getElementById('quizFeedback');
+    feedback.className = 'quiz-feedback';
+    feedback.textContent = '';
+
+    const nextBtn = document.getElementById('quizNextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (quizState.index === total - 1) ? '🏁 Завершить' : '➡ Далее';
+
+    document.getElementById('quizSkipBtn').disabled = false;
+    quizState.answered = false;
+  }
+
+  function answerQuiz(btn, card) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+
+    const isCorrect = btn.dataset.correct === '1';
+    const isReverse = card.type === 'reverse';
+
+    document.querySelectorAll('.quiz-option').forEach(o => {
+      o.disabled = true;
+      if (o.dataset.correct === '1') o.classList.add('correct');
+    });
+    if (!isCorrect) btn.classList.add('wrong');
+
+    const feedback = document.getElementById('quizFeedback');
+    if (isCorrect) {
+      feedback.className = 'quiz-feedback show ok';
+      feedback.textContent = '✅ Правильно!';
+      quizState.score++;
+      stats.correct++;
+    } else {
+      feedback.className = 'quiz-feedback show bad';
+      const correctText = isReverse ? card.question : card.answer;
+      feedback.innerHTML = `❌ Неправильно. Правильный вариант: <strong>${escapeHtml(correctText)}</strong>`;
+      stats.incorrect++;
+    }
+    save(); updateStats();
+
+    document.getElementById('quizNextBtn').disabled = false;
+    document.getElementById('quizSkipBtn').disabled = true;
+  }
+
+  function nextQuizQuestion() {
+    if (!quizState) return;
+    const total = quizState.queue.length;
+
+    if (quizState.index >= total - 1) {
+      renderQuizSummary();
+      return;
+    }
+    quizState.index++;
+    renderQuizQuestion();
+  }
+
+  function renderQuizSummary() {
+    const total = quizState.queue.length;
+    const percent = Math.round(quizState.score / total * 100);
+    let emoji = '😢', message = 'Попробуйте ещё раз!';
+    if (percent === 100) { emoji = '🏆'; message = 'Идеальный результат!'; }
+    else if (percent >= 80) { emoji = '🎉'; message = 'Отличный результат!'; }
+    else if (percent >= 60) { emoji = '👍'; message = 'Хороший результат!'; }
+    else if (percent >= 40) { emoji = '🤔'; message = 'Неплохо.'; }
+
+    const panel = document.getElementById('quizPanel');
+    panel.innerHTML = `
+      <div class="test-summary">
+        <div style="font-size: 50px; margin-bottom: 10px;">${emoji}</div>
+        <h2>${message}</h2>
+        <div class="test-score">${quizState.score} / ${total}</div>
+        <div class="test-summary-text">Правильных: ${percent}%</div>
+        <div class="test-summary-actions">
+          <button id="quizRestartBtn">🔄 Пройти заново</button>
+          <button class="secondary" id="quizExitBtn">📚 К карточкам</button>
+        </div>
+      </div>
+    `;
+    panel.querySelector('#quizRestartBtn').addEventListener('click', () => {
+      quizState = null;
+      startQuizMode();
+    });
+    panel.querySelector('#quizExitBtn').addEventListener('click', exitQuizMode);
+  }
+
+  function exitQuizMode() {
+    quizState = null;
+    showScreen('homeMode');
+    render();
+  }
+  document.getElementById('btnQuizMode').addEventListener('click', startQuizMode);
+
+  // ======================= ТЕСТ =======================
+  const modal = document.getElementById('testSetupModal');
+
+  document.getElementById('btnTestMode').addEventListener('click', () => {
+    if (cards.length === 0) { alert('Сначала добавьте хотя бы одну карточку!'); return; }
+    loadTimerSettings();
+    modal.classList.add('active');
+    lockBodyScroll(true);
+  });
+
+  function loadTimerSettings() {
+    try {
+      const s = JSON.parse(localStorage.getItem(TIMER_KEY));
+      if (s) {
+        if (s.mode) {
+          const radio = document.querySelector(`input[name="timerMode"][value="${s.mode}"]`);
+          if (radio) radio.checked = true;
+        }
+        if (s.totalMinutes) document.getElementById('totalMinutesInput').value = s.totalMinutes;
+        if (s.perQuestionSeconds) document.getElementById('perQuestionSecondsInput').value = s.perQuestionSeconds;
+      }
+    } catch (e) {}
+    updateTimerSelectionUI();
+  }
+  function saveTimerSettings() {
+    const mode = document.querySelector('input[name="timerMode"]:checked').value;
+    const totalMinutes = parseInt(document.getElementById('totalMinutesInput').value) || 10;
+    const perQuestionSeconds = parseInt(document.getElementById('perQuestionSecondsInput').value) || 30;
+    localStorage.setItem(TIMER_KEY, JSON.stringify({ mode, totalMinutes, perQuestionSeconds }));
+  }
+  function updateTimerSelectionUI() {
+    const mode = document.querySelector('input[name="timerMode"]:checked').value;
+    document.querySelectorAll('.timer-option').forEach(opt => {
+      opt.classList.toggle('selected', opt.dataset.mode === mode);
+    });
+    document.getElementById('totalTimeBlock').classList.toggle('visible', mode === 'total');
+    document.getElementById('perQuestionTimeBlock').classList.toggle('visible', mode === 'perQuestion');
+  }
+  document.querySelectorAll('input[name="timerMode"]').forEach(r => {
+    r.addEventListener('change', updateTimerSelectionUI);
+  });
+  document.querySelectorAll('.timer-option').forEach(opt => {
+    opt.addEventListener('click', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
+      const radio = opt.querySelector('input[type="radio"]');
+      radio.checked = true;
+      updateTimerSelectionUI();
+    });
+  });
+  function closeTestSetup() {
+    modal.classList.remove('active');
+    lockBodyScroll(false);
+  }
+  document.getElementById('cancelTestSetup').addEventListener('click', closeTestSetup);
+  document.getElementById('confirmTestSetup').addEventListener('click', () => {
+    saveTimerSettings();
+    const mode = document.querySelector('input[name="timerMode"]:checked').value;
+    const totalMinutes = Math.max(1, parseInt(document.getElementById('totalMinutesInput').value) || 10);
+    const perQuestionSeconds = Math.max(5, parseInt(document.getElementById('perQuestionSecondsInput').value) || 30);
+    closeTestSetup();
+    startTest({ mode, totalMinutes, perQuestionSeconds });
+  });
+  modal.addEventListener('click', e => { if (e.target === modal) closeTestSetup(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeTestSetup();
+  });
+
+  let test = null;
+
+  function startTest(config) {
+    stopTimer();
+    const queue = shuffle(cards).map(card => ({
+      ...card,
+      type: Math.random() < 0.5 ? 'forward' : 'reverse'
+    }));
+
+    test = {
+      queue,
+      index: 0,
+      answers: [],
+      finished: false,
+      checked: false,
+      timerConfig: config,
+      totalRemaining: config.mode === 'total' ? config.totalMinutes * 60 : null,
+      questionRemaining: config.mode === 'perQuestion' ? config.perQuestionSeconds : null,
+      intervalId: null,
+      questionTimedOut: false
+    };
+    showScreen('testMode');
+    renderTest();
+    startTimer();
+  }
+
+  function startTimer() {
+    if (!test || test.timerConfig.mode === 'none') return;
+    test.intervalId = setInterval(tickTimer, 1000);
+  }
+  function stopTimer() {
+    if (test && test.intervalId) { clearInterval(test.intervalId); test.intervalId = null; }
+  }
+  function tickTimer() {
+    if (!test || test.finished) { stopTimer(); return; }
+    if (test.timerConfig.mode === 'total') {
+      test.totalRemaining--;
+      if (test.totalRemaining <= 0) {
+        test.totalRemaining = 0;
+        updateTimerDisplay();
+        finishTestByTimeout();
+        return;
+      }
+    }
+    if (test.timerConfig.mode === 'perQuestion') {
+      if (test.checked) { updateTimerDisplay(); return; }
+      test.questionRemaining--;
+      if (test.questionRemaining <= 0) {
+        test.questionRemaining = 0;
+        updateTimerDisplay();
+        handleQuestionTimeout();
+        return;
+      }
+    }
+    updateTimerDisplay();
+  }
+  function updateTimerDisplay() {
+    const el = document.getElementById('timerDisplay');
+    if (!el || !test) return;
+    let seconds = null;
+    if (test.timerConfig.mode === 'total') seconds = test.totalRemaining;
+    else if (test.timerConfig.mode === 'perQuestion') seconds = test.questionRemaining;
+    else return;
+    el.querySelector('.timer-value').textContent = formatTime(seconds);
+    el.classList.remove('warning', 'danger');
+    if (seconds <= 5) el.classList.add('danger');
+    else if (seconds <= 15) el.classList.add('warning');
+  }
+  function handleQuestionTimeout() {
+    const card = test.queue[test.index];
+    test.answers.push({ id: card.id, user: '', correct: false, skipped: true, type: card.type });
+    test.checked = true;
+    test.questionTimedOut = true;
+    stats.incorrect++;
+    save();
+    renderTest();
+  }
+  function finishTestByTimeout() {
+    stopTimer();
+    while (test.answers.length < test.queue.length) {
+      const card = test.queue[test.answers.length];
+      test.answers.push({ id: card.id, user: '', correct: false, skipped: true, type: card.type });
+      stats.incorrect++;
+    }
+    save();
+    test.finished = true;
+    test.timeoutReason = 'total';
+    renderTest();
+  }
+
+  function renderTest() {
+    const panel = document.getElementById('testPanel');
+    if (!test) return;
+    if (test.finished) { renderTestSummary(panel); return; }
+
+    const card = test.queue[test.index];
+    const total = test.queue.length;
+    const progress = Math.round((test.index / total) * 100);
+    const mode = test.timerConfig.mode;
+    const isReverse = card.type === 'reverse';
+
+    let timerHtml = '';
+    if (mode === 'total') {
+      timerHtml = `<div class="timer-display" id="timerDisplay"><span class="timer-icon">⏱</span><span class="timer-value">${formatTime(test.totalRemaining)}</span></div>`;
+    } else if (mode === 'perQuestion') {
+      timerHtml = `<div class="timer-display" id="timerDisplay"><span class="timer-icon">⏳</span><span class="timer-value">${formatTime(test.questionRemaining)}</span></div>`;
+    }
+
+    let questionBlock = '';
+    if (isReverse) {
+      questionBlock = `
+        <div class="test-result prompt-reverse">
+          <div class="prompt-label">Ответ</div>
+          <div class="prompt-value">${escapeHtml(card.answer)}</div>
+        </div>
+        <div class="test-question" style="font-size: 16px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px;">
+          ✍️ Напишите задание/вопрос, к которому подходит этот ответ:
+        </div>
+      `;
+    } else {
+      questionBlock = `<div class="test-question">${escapeHtml(card.question)}</div>`;
+    }
+
+    panel.innerHTML = `
+      <div class="test-header">
+        <div class="test-progress-text">Вопрос ${test.index + 1} из ${total}</div>
+        ${timerHtml}
+        <button class="secondary" id="exitTestBtn" style="width: auto; padding: 10px 14px; font-size: 14px;">✖ Выйти</button>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+      ${questionBlock}
+      <textarea class="test-answer-input" id="testAnswer" placeholder="${test.questionTimedOut ? 'Время вышло' : (isReverse ? 'Ваш вариант задания...' : 'Ваш ответ...')}" ${test.checked ? 'disabled' : ''}
+                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">${test.checked && test.answers[test.answers.length-1] ? escapeHtml(test.answers[test.answers.length-1].user) : ''}</textarea>
+      <div class="test-result" id="testResult"></div>
+      <div class="test-controls" id="testControls"></div>
+    `;
+
+    const controls = panel.querySelector('#testControls');
+    const resultEl = panel.querySelector('#testResult');
+
+    if (!test.checked) {
+      controls.innerHTML = `<button id="testCheckBtn">✅ Проверить</button>`;
+      panel.querySelector('#testCheckBtn').addEventListener('click', checkTestAnswer);
+      const ta = panel.querySelector('#testAnswer');
+      ta.focus();
+      ta.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); checkTestAnswer(); }
+      });
+    } else {
+      const last = test.answers[test.answers.length - 1];
+      if (last.skipped) {
+        resultEl.className = 'test-result timeout';
+        const correctText = isReverse ? card.question : card.answer;
+        const label = isReverse ? 'Исходное задание' : 'Правильный ответ';
+        resultEl.innerHTML = `⏰ Время вышло! <br><strong>${label}:</strong> ${escapeHtml(correctText)}`;
+      } else if (last.correct) {
+        resultEl.className = 'test-result correct';
+        resultEl.textContent = isReverse ? '✅ Верно!' : '✅ Правильно!';
+      } else {
+        resultEl.className = 'test-result incorrect';
+        if (isReverse) {
+          resultEl.innerHTML = `❌ Не совсем. <br><strong>Исходное задание:</strong> ${escapeHtml(card.question)}`;
+        } else {
+          resultEl.innerHTML = `❌ Неправильно. <br><strong>Правильный ответ:</strong> ${escapeHtml(card.answer)}`;
+        }
+      }
+      const isLast = test.index === total - 1;
+      controls.innerHTML = `<button id="testNextBtn">${isLast ? '🏁 Завершить' : '➡ Далее'}</button>`;
+      panel.querySelector('#testNextBtn').addEventListener('click', nextTestQuestion);
+    }
+
+    panel.querySelector('#exitTestBtn').addEventListener('click', () => {
+      if (confirm('Прервать тест? Результат не сохранится.')) exitTest();
+    });
+
+    updateTimerDisplay();
+  }
+
+  function checkTestAnswer() {
+    const panel = document.getElementById('testPanel');
+    const ta = panel.querySelector('#testAnswer');
+    const answer = ta.value;
+    if (!answer.trim()) { alert('Введите ответ!'); return; }
+
+    const card = test.queue[test.index];
+    const isReverse = card.type === 'reverse';
+
+    let isCorrect;
+    if (isReverse) {
+      isCorrect = softMatch(answer, card.question);
+    } else {
+      isCorrect = normalize(answer) === normalize(card.answer);
+    }
+
+    test.answers.push({ id: card.id, user: answer, correct: isCorrect, type: card.type });
+    test.checked = true;
+    if (isCorrect) stats.correct++; else stats.incorrect++;
+    save();
+    if (document.activeElement) document.activeElement.blur();
+    renderTest();
+  }
+
+  function nextTestQuestion() {
+    test.checked = false;
+    test.questionTimedOut = false;
+    if (test.index === test.queue.length - 1) {
+      test.finished = true;
+      stopTimer();
+    } else {
+      test.index++;
+      if (test.timerConfig.mode === 'perQuestion') {
+        test.questionRemaining = test.timerConfig.perQuestionSeconds;
+      }
+    }
+    renderTest();
+  }
+
+  function renderTestSummary(panel) {
+    stopTimer();
+    const total = test.answers.length;
+    const correct = test.answers.filter(a => a.correct).length;
+    const skipped = test.answers.filter(a => a.skipped).length;
+    const percent = total ? Math.round(correct / total * 100) : 0;
+
+    let emoji = '😢', message = 'Попробуйте ещё раз!';
+    if (percent === 100) { emoji = '🏆'; message = 'Идеальный результат!'; }
+    else if (percent >= 80) { emoji = '🎉'; message = 'Отличный результат!'; }
+    else if (percent >= 60) { emoji = '👍'; message = 'Хороший результат!'; }
+    else if (percent >= 40) { emoji = '🤔'; message = 'Неплохо, но есть куда расти.'; }
+
+    let timeoutBanner = '';
+    if (test.timeoutReason === 'total') {
+      timeoutBanner = '<div class="test-result timeout" style="display:block; text-align:left; margin-bottom: 18px;">⏰ <strong>Время теста истекло!</strong> Оставшиеся вопросы засчитаны как пропущенные.</div>';
+    }
+
+    let modeInfo = '';
+    if (test.timerConfig.mode === 'total') modeInfo = `⏱ Режим: общее время (${test.timerConfig.totalMinutes} мин)`;
+    else if (test.timerConfig.mode === 'perQuestion') modeInfo = `⏳ Режим: ${test.timerConfig.perQuestionSeconds} сек на вопрос`;
+    else modeInfo = '🚫 Без таймера';
+
+    const reviewHtml = test.answers.map((a, i) => {
+      const card = test.queue[i];
+      const isReverse = card.type === 'reverse';
+      const cls = a.skipped ? 'skip' : (a.correct ? 'ok' : 'bad');
+      const userText = a.skipped ? '⏰ пропущено (время вышло)' : escapeHtml(a.user);
+
+      const typeTag = isReverse
+        ? '<span class="type-tag">🔄 обратный</span>'
+        : '<span class="type-tag">➡ прямой</span>';
+
+      const questionLine = isReverse
+        ? `Ответ: ${escapeHtml(card.answer)}`
+        : escapeHtml(card.question);
+      const correctLine = isReverse
+        ? `Исходное задание: ${escapeHtml(card.question)}`
+        : `Правильно: ${escapeHtml(card.answer)}`;
+
+      return `
+        <div class="review-item ${cls}">
+          <div class="q">${i + 1}. ${typeTag} ${questionLine}</div>
+          <div class="u">Ваш ответ: ${userText}</div>
+          <div class="a">${correctLine}</div>
+        </div>
+      `;
+    }).join('');
+
+    panel.innerHTML = `
+      <div class="test-summary">
+        <div style="font-size: 50px; margin-bottom: 10px;">${emoji}</div>
+        <h2>${message}</h2>
+        <div class="test-score">${correct} / ${total}</div>
+        <div class="test-summary-text">
+          Правильных ответов: ${percent}%
+          ${skipped > 0 ? `<br>Пропущено по таймеру: ${skipped}` : ''}
+          <br><span style="font-size: 13px; opacity: 0.8;">${modeInfo}</span>
+        </div>
+        ${timeoutBanner}
+        <div class="test-summary-actions">
+          <button id="retryTestBtn">🔄 Пройти заново</button>
+          <button class="secondary" id="finishTestBtn">📚 К карточкам</button>
+        </div>
+        <div class="test-review">
+          <h3>📋 Разбор ответов:</h3>
+          ${reviewHtml}
+        </div>
+      </div>
+    `;
+    panel.querySelector('#retryTestBtn').addEventListener('click', () => {
+      exitTest(true);
+      setTimeout(() => {
+        loadTimerSettings();
+        modal.classList.add('active');
+        lockBodyScroll(true);
+      }, 100);
+    });
+    panel.querySelector('#finishTestBtn').addEventListener('click', exitTest);
+  }
+
+  function exitTest(keepGoing) {
+    stopTimer();
+    test = null;
+    if (!keepGoing) {
+      showScreen('homeMode');
+      render();
+    }
+  }
+
+  // ======================= ИНИЦИАЛИЗАЦИЯ =======================
+  load();
+  render();
+</script>
+</body>
+</html>
