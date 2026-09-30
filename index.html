@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover, interactive-widget=resizes-content, user-scalable=no">
 <meta name="theme-color" content="#6366f1" id="themeColorMeta">
-
-<!-- ============ PWA ============ -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -17,7 +15,6 @@
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-
 <title>Карточки заданий</title>
 <script>
   (function() {
@@ -76,7 +73,6 @@
     --quiz-wrong-border: #ef4444;
     --quiz-wrong-text: #991b1b;
   }
-
   [data-theme="dark"] {
     --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #2e1065 100%);
     --surface: #1e293b;
@@ -124,19 +120,8 @@
     --quiz-wrong-border: #f87171;
     --quiz-wrong-text: #fecaca;
   }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
-  html {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-    scroll-behavior: smooth;
-    height: 100%;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; height: 100%; }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
     background: var(--bg-gradient);
@@ -158,57 +143,30 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  input, textarea {
-    -webkit-user-select: text;
-    user-select: text;
-  }
-
+  input, textarea { -webkit-user-select: text; user-select: text; }
   .container { max-width: 900px; margin: 0 auto; width: 100%; }
-
   .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    gap: 12px;
-    flex-wrap: wrap;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; gap: 12px; flex-wrap: wrap;
     padding-top: env(safe-area-inset-top);
   }
   h1 {
-    color: var(--header-text);
-    font-size: 22px;
-    line-height: 1.3;
-    text-shadow: var(--header-shadow);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    min-width: 0;
-    transition: color 0.3s ease;
+    color: var(--header-text); font-size: 22px; line-height: 1.3;
+    text-shadow: var(--header-shadow); display: flex; align-items: center;
+    gap: 8px; flex: 1; min-width: 0; transition: color 0.3s ease;
   }
-
   .theme-toggle {
-    position: relative;
-    width: 62px;
-    height: 32px;
-    background: var(--surface);
-    border-radius: 32px;
-    border: 2px solid var(--border);
-    cursor: pointer;
-    padding: 0;
-    min-height: auto;
-    flex-shrink: 0;
-    box-shadow: var(--shadow);
-    transition: all 0.3s ease;
-    overflow: hidden;
+    position: relative; width: 62px; height: 32px;
+    background: var(--surface); border-radius: 32px;
+    border: 2px solid var(--border); cursor: pointer;
+    padding: 0; min-height: auto; flex-shrink: 0;
+    box-shadow: var(--shadow); transition: all 0.3s ease; overflow: hidden;
   }
   .theme-toggle:hover { background: var(--surface); border-color: var(--primary); transform: none; }
   .theme-toggle:active { transform: scale(0.96); }
   .theme-toggle .toggle-knob {
-    position: absolute;
-    top: 2px; left: 2px;
-    width: 24px; height: 24px;
-    border-radius: 50%;
+    position: absolute; top: 2px; left: 2px;
+    width: 24px; height: 24px; border-radius: 50%;
     background: linear-gradient(135deg, #fbbf24, #f59e0b);
     display: flex; align-items: center; justify-content: center;
     font-size: 14px;
@@ -219,36 +177,20 @@
     transform: translateX(30px);
     background: linear-gradient(135deg, #818cf8, #6366f1);
   }
-
   .panel {
-    background: var(--surface);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: var(--shadow-lg);
-    margin-bottom: 18px;
+    background: var(--surface); border-radius: 16px; padding: 20px;
+    box-shadow: var(--shadow-lg); margin-bottom: 18px;
     border: 1px solid var(--border);
     transition: background 0.3s ease, border-color 0.3s ease;
   }
-  .panel h2 {
-    font-size: 17px;
-    margin-bottom: 14px;
-    color: var(--text-secondary);
-    transition: color 0.3s ease;
-  }
-
+  .panel h2 { font-size: 17px; margin-bottom: 14px; color: var(--text-secondary); }
   input, textarea, button {
-    font-family: inherit;
-    font-size: 16px;
-    border-radius: 12px;
-    border: 2px solid var(--border);
-    padding: 13px 14px;
-    width: 100%;
-    outline: none;
+    font-family: inherit; font-size: 16px; border-radius: 12px;
+    border: 2px solid var(--border); padding: 13px 14px;
+    width: 100%; outline: none;
     transition: border-color 0.2s, background 0.3s, color 0.3s;
-    -webkit-appearance: none;
-    appearance: none;
-    background: var(--input-bg);
-    color: var(--text);
+    -webkit-appearance: none; appearance: none;
+    background: var(--input-bg); color: var(--text);
   }
   input::placeholder, textarea::placeholder { color: var(--text-muted); }
   input:focus, textarea:focus {
@@ -257,21 +199,13 @@
   }
   textarea { resize: vertical; min-height: 70px; font-family: inherit; }
   input { min-height: 48px; }
-
   .row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
   .row > * { flex: 1; min-width: 200px; }
-
   button {
-    background: var(--primary);
-    color: var(--text-on-color);
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.15s;
-    min-height: 48px;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
+    background: var(--primary); color: var(--text-on-color);
+    border: none; cursor: pointer; font-weight: 600;
+    transition: all 0.15s; min-height: 48px;
+    touch-action: manipulation; user-select: none; -webkit-user-select: none;
   }
   button:hover { background: var(--primary-hover); }
   button:active { background: var(--primary-active); transform: scale(0.98); }
@@ -282,110 +216,63 @@
   button.success { background: var(--success); }
   button.success:hover { background: var(--success-hover); }
   button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
   .menu-panel {
-    background: var(--surface);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: var(--shadow-lg);
-    margin-bottom: 18px;
+    background: var(--surface); border-radius: 16px; padding: 20px;
+    box-shadow: var(--shadow-lg); margin-bottom: 18px;
     border: 1px solid var(--border);
   }
-  .menu-panel h2 {
-    font-size: 17px;
-    margin-bottom: 14px;
-    color: var(--text-secondary);
-  }
+  .menu-panel h2 { font-size: 17px; margin-bottom: 14px; color: var(--text-secondary); }
   .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 12px;
   }
   .menu-btn {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px;
-    border-radius: 14px;
-    border: 2px solid var(--border);
-    background: var(--surface-2);
-    color: var(--text);
-    cursor: pointer;
-    text-align: left;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.2s;
-    min-height: 72px;
-    width: 100%;
-    font-family: inherit;
-    line-height: 1.3;
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px; border-radius: 14px;
+    border: 2px solid var(--border); background: var(--surface-2);
+    color: var(--text); cursor: pointer; text-align: left;
+    font-weight: 600; font-size: 15px; transition: all 0.2s;
+    min-height: 72px; width: 100%; font-family: inherit; line-height: 1.3;
   }
   .menu-btn:hover {
-    background: var(--surface-hover);
-    border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
+    background: var(--surface-hover); border-color: var(--primary);
+    transform: translateY(-2px); box-shadow: var(--shadow);
   }
   .menu-btn:active { transform: translateY(0) scale(0.98); }
   .menu-btn .menu-icon {
-    font-size: 26px;
-    flex-shrink: 0;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--primary-soft);
+    font-size: 26px; flex-shrink: 0; width: 42px; height: 42px;
+    border-radius: 12px; display: flex; align-items: center;
+    justify-content: center; background: var(--primary-soft);
   }
   .menu-btn .menu-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .menu-btn .menu-title { font-weight: 700; font-size: 15px; }
   .menu-btn .menu-sub { font-weight: 400; font-size: 12px; color: var(--text-muted); }
-
   .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
   }
   .card {
-    background: var(--surface);
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: var(--shadow);
-    border-top: 5px solid var(--primary);
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
+    background: var(--surface); border-radius: 16px; padding: 18px;
+    box-shadow: var(--shadow); border-top: 5px solid var(--primary);
+    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     transition: transform 0.2s, box-shadow 0.2s, background 0.3s, border-color 0.3s;
   }
   .card .question {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 14px;
-    color: var(--text);
-    flex-grow: 1;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-    line-height: 1.4;
+    font-size: 17px; font-weight: 600; margin-bottom: 14px; color: var(--text);
+    flex-grow: 1; white-space: pre-wrap; word-wrap: break-word;
+    overflow-wrap: anywhere; line-height: 1.4;
   }
   .card textarea { min-height: 60px; margin-bottom: 12px; font-size: 16px; }
   .card .btn-group { display: flex; gap: 8px; margin-bottom: 10px; }
   .card .btn-group button { padding: 12px 10px; font-size: 14px; flex: 1; }
   .card-actions { display: flex; gap: 8px; margin-top: auto; }
   .card-actions button { flex: 1; padding: 11px; font-size: 14px; min-height: 44px; }
-
   .result {
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    display: none;
-    line-height: 1.5;
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
+    padding: 12px; border-radius: 10px; font-size: 14px;
+    margin-bottom: 10px; display: none; line-height: 1.5;
+    word-wrap: break-word; overflow-wrap: anywhere;
   }
   .result.correct {
     background: var(--success-soft); color: var(--success-text);
@@ -397,10 +284,8 @@
   }
   .empty {
     text-align: center; color: var(--header-text);
-    padding: 40px 20px; font-size: 16px;
-    opacity: 0.9; line-height: 1.5;
+    padding: 40px 20px; font-size: 16px; opacity: 0.9; line-height: 1.5;
   }
-
   .toolbar {
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
@@ -409,19 +294,11 @@
     color: var(--header-text); font-size: 14px; font-weight: 600;
     text-shadow: var(--header-shadow); line-height: 1.4;
   }
-
   .settings-bar {
-    background: var(--surface);
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
+    background: var(--surface); border-radius: 14px; padding: 14px 16px;
+    margin-bottom: 18px; display: flex; align-items: center;
+    justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
   }
   .settings-bar .label {
     display: flex; align-items: center; gap: 12px;
@@ -430,87 +307,56 @@
     flex: 1; min-width: 200px;
   }
   .settings-bar .label > span:last-child { flex: 1; min-width: 0; }
-  .switch {
-    position: relative; display: inline-block;
-    width: 50px; height: 28px; flex-shrink: 0;
-  }
+  .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
   .switch input { opacity: 0; width: 0; height: 0; min-height: 0; }
   .slider {
-    position: absolute; cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: var(--border-strong);
-    border-radius: 26px; transition: 0.3s;
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--border-strong); border-radius: 26px; transition: 0.3s;
   }
   .slider:before {
-    position: absolute; content: "";
-    height: 22px; width: 22px;
-    left: 3px; bottom: 3px;
-    background-color: #ffffff; border-radius: 50%;
-    transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    position: absolute; content: ""; height: 22px; width: 22px;
+    left: 3px; bottom: 3px; background-color: #ffffff;
+    border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
   .switch input:checked + .slider { background-color: var(--primary); }
   .switch input:checked + .slider:before { transform: translateX(22px); }
   .settings-hint { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 2px; line-height: 1.3; }
-
   .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--overlay-bg);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 16px;
+    position: fixed; inset: 0; background: var(--overlay-bg);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000; padding: 16px;
     padding-top: max(16px, env(safe-area-inset-top));
     padding-bottom: max(16px, env(safe-area-inset-bottom));
-    animation: fadeIn 0.2s ease;
-    overscroll-behavior: contain;
+    animation: fadeIn 0.2s ease; overscroll-behavior: contain;
   }
   .modal-overlay.active { display: flex; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
   .modal {
-    background: var(--surface);
-    border-radius: 20px;
-    padding: 24px;
-    max-width: 460px;
-    width: 100%;
-    max-height: calc(100vh - 32px);
-    max-height: calc(100dvh - 32px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    background: var(--surface); border-radius: 20px; padding: 24px;
+    max-width: 460px; width: 100%;
+    max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px);
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     border: 1px solid var(--border);
     animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .modal h2 { font-size: 20px; margin-bottom: 6px; color: var(--text); font-weight: 700; }
   .modal .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
-
   .timer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
   .timer-option {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    cursor: pointer;
-    background: var(--surface);
-    transition: all 0.2s;
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px; border: 2px solid var(--border); border-radius: 12px;
+    cursor: pointer; background: var(--surface); transition: all 0.2s;
     user-select: none;
   }
   .timer-option:active { transform: scale(0.99); }
   .timer-option.selected { border-color: var(--primary); background: var(--primary-soft); }
   .timer-option input[type="radio"] {
-    width: 20px; height: 20px;
-    min-width: 20px; min-height: 20px;
-    margin-top: 2px;
-    accent-color: var(--primary);
-    cursor: pointer; flex-shrink: 0;
-    padding: 0; border: none; background: transparent;
+    width: 20px; height: 20px; min-width: 20px; min-height: 20px;
+    margin-top: 2px; accent-color: var(--primary);
+    cursor: pointer; flex-shrink: 0; padding: 0; border: none; background: transparent;
   }
   .timer-option .opt-content { flex: 1; min-width: 0; }
   .timer-option .opt-title {
@@ -519,7 +365,6 @@
     gap: 6px; flex-wrap: wrap;
   }
   .timer-option .opt-desc { font-size: 13px; color: var(--text-muted); line-height: 1.35; }
-
   .time-input-block {
     display: none; margin-top: 12px; padding-top: 12px;
     border-top: 1px dashed var(--border);
@@ -535,10 +380,8 @@
     padding: 10px; min-height: 48px;
   }
   .time-input-row .unit { color: var(--text-muted); font-size: 14px; font-weight: 600; white-space: nowrap; }
-
   .modal-actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
   .modal-actions button { flex: 1; min-width: 130px; }
-
   #testMode { display: none; }
   #testMode.active { display: block; }
   .test-header {
@@ -546,7 +389,6 @@
     margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
   }
   .test-progress-text { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
-
   .timer-display {
     display: flex; align-items: center; gap: 6px;
     padding: 8px 14px; border-radius: 12px;
@@ -559,20 +401,16 @@
   .timer-display .timer-icon { font-size: 15px; }
   .timer-display.warning {
     background: var(--warning-soft); color: var(--warning-text);
-    border-color: var(--warning);
-    animation: timerPulse 1s ease-in-out infinite;
+    border-color: var(--warning); animation: timerPulse 1s ease-in-out infinite;
   }
   .timer-display.danger {
     background: var(--error-soft); color: var(--error-text);
-    border-color: var(--error);
-    animation: timerPulse 0.6s ease-in-out infinite;
+    border-color: var(--error); animation: timerPulse 0.6s ease-in-out infinite;
   }
   @keyframes timerPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-
   .progress-bar {
     width: 100%; height: 10px; background: var(--progress-bg);
     border-radius: 10px; overflow: hidden; margin-bottom: 20px;
-    transition: background 0.3s ease;
   }
   .progress-fill {
     height: 100%;
@@ -603,11 +441,8 @@
     border-left: 4px solid var(--warning); display: block;
   }
   .test-result.prompt-reverse {
-    display: block;
-    background: var(--primary-soft);
-    color: var(--text);
-    border-left: 4px solid var(--primary);
-    margin-bottom: 14px;
+    display: block; background: var(--primary-soft); color: var(--text);
+    border-left: 4px solid var(--primary); margin-bottom: 14px;
   }
   .test-result.prompt-reverse .prompt-label {
     font-size: 12px; font-weight: 700; text-transform: uppercase;
@@ -619,7 +454,6 @@
   }
   .test-controls { display: flex; gap: 10px; flex-wrap: wrap; }
   .test-controls button { width: auto; flex: 1; min-width: 120px; }
-
   .test-summary { text-align: center; }
   .test-summary h2 { font-size: 22px; margin-bottom: 14px; color: var(--text); line-height: 1.3; }
   .test-score {
@@ -631,7 +465,6 @@
   .test-summary-text { font-size: 16px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5; }
   .test-summary-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .test-summary-actions button { width: auto; padding: 13px 22px; font-size: 15px; }
-
   .test-review { margin-top: 22px; text-align: left; }
   .test-review h3 { font-size: 16px; margin-bottom: 12px; color: var(--text-secondary); }
   .review-item {
@@ -653,16 +486,10 @@
     margin-right: 6px; text-transform: uppercase;
     letter-spacing: 0.3px; vertical-align: middle;
   }
-
   #viewMode { display: none; }
   #viewMode.active { display: block; }
   .flip-container {
-    display: flex; flex-direction: column;
-    align-items: center; gap: 18px;
-  }
-  .flip-progress {
-    font-size: 15px; font-weight: 600;
-    color: var(--text-secondary); text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
   }
   .flip-scene {
     width: 100%; max-width: 520px; height: 340px;
@@ -676,16 +503,12 @@
   .flip-card.flipped { transform: rotateY(180deg); }
   .flip-face {
     position: absolute; inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
     border-radius: 20px; padding: 26px;
     display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    text-align: center;
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--border);
-    overflow-y: auto;
-    word-wrap: break-word; overflow-wrap: anywhere;
+    justify-content: center; align-items: center; text-align: center;
+    box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+    overflow-y: auto; word-wrap: break-word; overflow-wrap: anywhere;
   }
   .flip-front { background: var(--flip-front); color: var(--text); }
   .flip-back { background: var(--flip-back); color: var(--text); transform: rotateY(180deg); }
@@ -695,48 +518,37 @@
     letter-spacing: 0.6px; text-transform: uppercase;
     color: var(--text-muted); opacity: 0.8;
   }
-  .flip-text {
-    font-size: 22px; font-weight: 700;
-    line-height: 1.35; max-width: 100%;
-  }
+  .flip-text { font-size: 22px; font-weight: 700; line-height: 1.35; max-width: 100%; }
   .flip-hint {
     position: absolute; bottom: 14px; left: 0; right: 0;
     text-align: center; font-size: 12px;
     color: var(--text-muted); opacity: 0.75;
   }
   .flip-controls {
-    display: flex; gap: 10px;
-    width: 100%; max-width: 520px; flex-wrap: wrap;
+    display: flex; gap: 10px; width: 100%; max-width: 520px; flex-wrap: wrap;
   }
   .flip-controls button { flex: 1; min-width: 130px; padding: 14px; font-size: 15px; }
   .flip-controls.hidden { display: none; }
   .flip-controls-row {
-    display: flex; gap: 10px;
-    width: 100%; max-width: 520px; flex-wrap: wrap;
+    display: flex; gap: 10px; width: 100%; max-width: 520px; flex-wrap: wrap;
   }
   .flip-controls-row button { flex: 1; min-width: 100px; padding: 13px 12px; font-size: 14px; }
   .flip-nav {
-    display: flex; justify-content: space-between;
-    gap: 10px; width: 100%; max-width: 520px;
+    display: flex; justify-content: space-between; gap: 10px;
+    width: 100%; max-width: 520px;
   }
   .flip-nav button { flex: 1; padding: 12px; font-size: 15px; }
-
   #quizMode { display: none; }
   #quizMode.active { display: block; }
   .quiz-question {
     font-size: 22px; font-weight: 700; color: var(--text);
-    margin-bottom: 8px; line-height: 1.35;
-    white-space: pre-wrap;
+    margin-bottom: 8px; line-height: 1.35; white-space: pre-wrap;
     word-wrap: break-word; overflow-wrap: anywhere;
     text-align: center; padding: 14px 8px;
   }
   .quiz-question.prompt-reverse {
-    display: block;
-    background: var(--primary-soft);
-    border-radius: 14px;
-    border-left: 4px solid var(--primary);
-    text-align: left;
-    padding: 14px 18px;
+    display: block; background: var(--primary-soft); border-radius: 14px;
+    border-left: 4px solid var(--primary); text-align: left; padding: 14px 18px;
   }
   .quiz-question.prompt-reverse .prompt-label {
     font-size: 12px; font-weight: 700;
@@ -745,74 +557,55 @@
   }
   .quiz-question.prompt-reverse .prompt-value {
     font-size: 19px; font-weight: 700;
-    word-wrap: break-word; overflow-wrap: anywhere;
-    line-height: 1.4;
+    word-wrap: break-word; overflow-wrap: anywhere; line-height: 1.4;
   }
   .quiz-subtitle {
     font-size: 13px; color: var(--text-muted);
     text-align: center; margin-bottom: 18px;
-    font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
   }
-  .quiz-options {
-    display: flex; flex-direction: column;
-    gap: 12px; margin-bottom: 18px;
-  }
+  .quiz-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
   .quiz-option {
     display: flex; align-items: center; gap: 14px;
-    padding: 16px 18px;
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    background: var(--surface-2);
-    color: var(--text);
-    cursor: pointer; font-size: 16px;
-    font-weight: 500; text-align: left;
-    transition: all 0.2s; font-family: inherit;
+    padding: 16px 18px; border: 2px solid var(--border); border-radius: 14px;
+    background: var(--surface-2); color: var(--text);
+    cursor: pointer; font-size: 16px; font-weight: 500;
+    text-align: left; transition: all 0.2s; font-family: inherit;
     line-height: 1.35; width: 100%; min-height: 62px;
     word-wrap: break-word; overflow-wrap: anywhere;
   }
   .quiz-option:hover:not(:disabled) {
-    border-color: var(--primary);
-    background: var(--primary-soft);
+    border-color: var(--primary); background: var(--primary-soft);
     transform: translateY(-1px);
   }
   .quiz-option:active:not(:disabled) { transform: scale(0.99); }
   .quiz-option .opt-marker {
-    flex-shrink: 0; width: 34px; height: 34px;
-    border-radius: 50%;
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    font-size: 15px; transition: all 0.2s;
+    font-weight: 700; background: var(--surface);
+    border: 2px solid var(--border); font-size: 15px; transition: all 0.2s;
   }
   .quiz-option .opt-text { flex: 1; min-width: 0; }
   .quiz-option.correct {
-    background: var(--quiz-correct-bg);
-    border-color: var(--quiz-correct-border);
+    background: var(--quiz-correct-bg); border-color: var(--quiz-correct-border);
     color: var(--quiz-correct-text);
   }
   .quiz-option.correct .opt-marker {
-    background: var(--quiz-correct-border);
-    color: #fff;
+    background: var(--quiz-correct-border); color: #fff;
     border-color: var(--quiz-correct-border);
   }
   .quiz-option.wrong {
-    background: var(--quiz-wrong-bg);
-    border-color: var(--quiz-wrong-border);
+    background: var(--quiz-wrong-bg); border-color: var(--quiz-wrong-border);
     color: var(--quiz-wrong-text);
   }
   .quiz-option.wrong .opt-marker {
-    background: var(--quiz-wrong-border);
-    color: #fff;
+    background: var(--quiz-wrong-border); color: #fff;
     border-color: var(--quiz-wrong-border);
   }
   .quiz-option:disabled { cursor: default; }
   .quiz-feedback {
-    text-align: center; font-size: 15px;
-    font-weight: 600; margin-bottom: 14px;
-    padding: 10px; border-radius: 10px;
-    display: none;
+    text-align: center; font-size: 15px; font-weight: 600;
+    margin-bottom: 14px; padding: 10px; border-radius: 10px; display: none;
   }
   .quiz-feedback.show { display: block; }
   .quiz-feedback.ok { background: var(--success-soft); color: var(--success-text); }
@@ -820,10 +613,36 @@
   .quiz-controls { display: flex; gap: 10px; flex-wrap: wrap; }
   .quiz-controls button { flex: 1; min-width: 130px; padding: 14px; }
 
+  /* ============ QR-код ============ */
+  .qr-container {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding: 18px; background: #fff; border-radius: 16px;
+    margin-bottom: 16px;
+  }
+  .qr-container canvas, .qr-container img {
+    display: block; max-width: 100%; height: auto;
+    image-rendering: pixelated;
+  }
+  .share-link-box {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px; font-family: monospace;
+    font-size: 12px; word-break: break-all; max-height: 100px;
+    overflow-y: auto; color: var(--text-secondary);
+    margin-bottom: 14px; -webkit-user-select: text; user-select: text;
+  }
+  .share-info {
+    font-size: 13px; color: var(--text-muted); text-align: center;
+    margin-bottom: 12px; line-height: 1.4;
+  }
+  .share-buttons {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .share-buttons button { flex: 1; min-width: 140px; }
+
   @media (max-width: 900px) {
     .cards-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   }
-
   @media (max-width: 640px) {
     body {
       padding: 12px;
@@ -863,8 +682,7 @@
     .timer-display { font-size: 15px; padding: 7px 12px; }
     .test-header #exitTestBtn {
       order: 3; width: 100% !important;
-      padding: 10px !important; font-size: 14px !important;
-      min-height: 44px;
+      padding: 10px !important; font-size: 14px !important; min-height: 44px;
     }
     .test-question { font-size: 17px; margin-bottom: 14px; }
     .test-score { font-size: 36px; }
@@ -874,10 +692,7 @@
     .test-summary-actions { flex-direction: column; gap: 8px; }
     .test-summary-actions button { width: 100%; padding: 14px; }
     .modal-overlay { padding: 8px; }
-    .modal {
-      padding: 20px 18px; border-radius: 18px;
-      max-height: calc(100dvh - 16px);
-    }
+    .modal { padding: 20px 18px; border-radius: 18px; max-height: calc(100dvh - 16px); }
     .modal h2 { font-size: 18px; }
     .modal .subtitle { font-size: 13px; margin-bottom: 16px; }
     .timer-option { padding: 13px; }
@@ -902,8 +717,9 @@
     .quiz-option .opt-marker { width: 30px; height: 30px; font-size: 14px; }
     .quiz-controls { flex-direction: column; gap: 8px; }
     .quiz-controls button { width: 100%; }
+    .share-buttons { flex-direction: column; }
+    .share-buttons button { width: 100%; }
   }
-
   @media (max-width: 380px) {
     body {
       padding: 8px;
@@ -925,7 +741,6 @@
     .quiz-question { font-size: 17px; }
     .quiz-option { font-size: 14px; padding: 13px 12px; }
   }
-
   @media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
     body { padding: 8px; }
     .panel, .menu-panel { padding: 12px; margin-bottom: 10px; }
@@ -937,38 +752,27 @@
     .flip-scene { height: 220px; }
     .flip-text { font-size: 17px; }
   }
-
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
-      transition: none !important;
-      animation: none !important;
+      transition: none !important; animation: none !important;
     }
     html { scroll-behavior: auto; }
     .flip-card { transition: none; }
   }
-
-  body.theme-transition,
-  body.theme-transition * {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+  body.theme-transition, body.theme-transition * {
+    transition: background-color 0.3s ease, color 0.3s ease,
+                border-color 0.3s ease, box-shadow 0.3s ease !important;
   }
   body.theme-transition .flip-card {
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
-
-  /* Индикатор "офлайн" */
   .offline-badge {
-    position: fixed;
-    top: calc(env(safe-area-inset-top, 0px) + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--warning);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    z-index: 2000;
-    display: none;
+    position: fixed; top: calc(env(safe-area-inset-top, 0px) + 8px);
+    left: 50%; transform: translateX(-50%);
+    background: var(--warning); color: #fff;
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 700;
+    z-index: 2000; display: none;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
   .offline-badge.show { display: block; }
@@ -1024,6 +828,13 @@
             <span class="menu-sub">Задание→ответ и ответ→задание вперемешку</span>
           </span>
         </button>
+        <button class="menu-btn" id="btnShareMode">
+          <span class="menu-icon">📤</span>
+          <span class="menu-text">
+            <span class="menu-title">Поделиться</span>
+            <span class="menu-sub">Отправить набор · импорт по ссылке</span>
+          </span>
+        </button>
       </div>
     </div>
 
@@ -1055,6 +866,11 @@
 
   <div id="testMode">
     <div class="panel" id="testPanel"></div>
+  </div>
+
+  <!-- ============ РЕЖИМ "ПОДЕЛИТЬСЯ" ============ -->
+  <div id="shareMode">
+    <div class="panel" id="sharePanel"></div>
   </div>
 </div>
 
@@ -1121,7 +937,7 @@
   let stats = { correct: 0, incorrect: 0 };
   let resetOnReload = false;
 
-  // ======================= PWA: service worker =======================
+  // ======================= PWA =======================
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js')
@@ -1129,8 +945,6 @@
         .catch(err => console.warn('SW ошибка:', err));
     });
   }
-
-  // Индикатор офлайн-режима
   function updateOfflineBadge() {
     const badge = document.getElementById('offlineBadge');
     if (!badge) return;
@@ -1140,16 +954,12 @@
   window.addEventListener('online', updateOfflineBadge);
   window.addEventListener('offline', updateOfflineBadge);
   updateOfflineBadge();
-
-  // ======================= PWA: высота приложения =======================
   function setAppHeight() {
     document.documentElement.style.setProperty('--app-height', window.innerHeight + 'px');
   }
   setAppHeight();
   window.addEventListener('resize', setAppHeight);
   window.addEventListener('orientationchange', () => setTimeout(setAppHeight, 200));
-
-  // ======================= Защита от случайного выхода (iOS) =======================
   let edgeTouchStart = null;
   document.addEventListener('touchstart', e => {
     if (e.touches[0].clientX < 25) {
@@ -1160,17 +970,11 @@
     if (!edgeTouchStart) return;
     const dx = e.changedTouches[0].clientX - edgeTouchStart.x;
     const dy = Math.abs(e.changedTouches[0].clientY - edgeTouchStart.y);
-    // Свайп от левого края вправо — блокируем (иначе iOS выйдет из PWA)
-    if (dx > 60 && dy < 40) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+    if (dx > 60 && dy < 40) { e.preventDefault(); e.stopPropagation(); }
     edgeTouchStart = null;
   }, { passive: false });
 
-  // ======================= МОБИЛЬНАЯ АДАПТАЦИЯ =======================
   document.addEventListener('touchstart', function(){}, { passive: true });
-
   document.addEventListener('focusin', e => {
     if (e.target.matches('input, textarea')) {
       setTimeout(() => {
@@ -1178,11 +982,9 @@
       }, 300);
     }
   });
-
   document.addEventListener('dblclick', e => {
     if (e.target.closest('button')) e.preventDefault();
   });
-
   function lockBodyScroll(lock) {
     if (lock) {
       document.body.style.overflow = 'hidden';
@@ -1231,12 +1033,10 @@
     resetOnReload = localStorage.getItem(RESET_KEY) === 'true';
     document.getElementById('resetToggle').checked = resetOnReload;
     updateResetHint();
-
     try {
       const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
       if (data && Array.isArray(data.cards)) cards = data.cards;
     } catch (e) { console.warn('Ошибка загрузки карточек', e); }
-
     if (resetOnReload) {
       stats = { correct: 0, incorrect: 0 };
       localStorage.removeItem(STATS_KEY);
@@ -1267,9 +1067,7 @@
   }
   function normalize(str) {
     return str.toString().trim().toLowerCase()
-      .replace(/\s+/g, ' ')
-      .replace(/ё/g, 'е')
-      .replace(/[.,!?;:]/g, '');
+      .replace(/\s+/g, ' ').replace(/ё/g, 'е').replace(/[.,!?;:]/g, '');
   }
   function escapeHtml(str) {
     const div = document.createElement('div');
@@ -1305,7 +1103,7 @@
   }
 
   // ======================= ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ =======================
-  const SCREENS = ['homeMode', 'viewMode', 'quizMode', 'testMode'];
+  const SCREENS = ['homeMode', 'viewMode', 'quizMode', 'testMode', 'shareMode'];
   function showScreen(id) {
     SCREENS.forEach(s => {
       const el = document.getElementById(s);
@@ -1377,7 +1175,6 @@
     const action = btn.dataset.action;
     const userAnswerEl = cardEl.querySelector('[data-role="userAnswer"]');
     const resultEl = cardEl.querySelector('[data-role="result"]');
-
     if (action === 'check') {
       const userAnswer = userAnswerEl.value;
       if (!userAnswer.trim()) {
@@ -1445,20 +1242,13 @@
 
   // ======================= РЕЖИМ ПРОСМОТРА =======================
   let viewState = null;
-
   function startViewMode() {
     if (cards.length === 0) { alert('Сначала добавьте хотя бы одну карточку!'); return; }
-    viewState = {
-      queue: shuffle(cards),
-      index: 0,
-      known: 0,
-      unknown: 0
-    };
+    viewState = { queue: shuffle(cards), index: 0, known: 0, unknown: 0 };
     showScreen('viewMode');
     renderViewPanel();
     renderViewCard();
   }
-
   function renderViewPanel() {
     const panel = document.getElementById('viewPanel');
     panel.innerHTML = `
@@ -1510,7 +1300,6 @@
     `;
     bindViewEvents();
   }
-
   function bindViewEvents() {
     const clone = (id) => {
       const el = document.getElementById(id);
@@ -1519,7 +1308,6 @@
       el.parentNode.replaceChild(c, el);
       return c;
     };
-
     const flipScene = clone('flipScene');
     const btnReveal = clone('btnRevealAnswer');
     const btnKnew = clone('btnKnew');
@@ -1529,7 +1317,6 @@
     const exitBtn = clone('exitViewBtn');
     const btnShuffle = clone('btnShuffleView');
     const btnRestart = clone('btnRestartView');
-
     if (flipScene) flipScene.addEventListener('click', flipCard);
     if (btnReveal) btnReveal.addEventListener('click', revealAnswer);
     if (btnKnew) btnKnew.addEventListener('click', () => markKnown(true));
@@ -1551,29 +1338,23 @@
       renderViewCard();
     });
   }
-
   function renderViewCard() {
     if (!viewState) return;
     const card = viewState.queue[viewState.index];
     const total = viewState.queue.length;
-
     document.getElementById('viewProgress').textContent = `Карточка ${viewState.index + 1} из ${total}`;
     document.getElementById('viewProgressBar').style.width = `${Math.round((viewState.index / total) * 100)}%`;
     document.getElementById('flipFrontText').textContent = card.question;
     document.getElementById('flipBackText').textContent = card.answer;
     document.getElementById('viewStats').textContent = `✅ ${viewState.known} · ❌ ${viewState.unknown}`;
-
     const flipCard = document.getElementById('flipCard');
     flipCard.classList.remove('flipped');
-
     document.getElementById('flipRevealControls').classList.remove('hidden');
     document.getElementById('flipKnowControls').classList.add('hidden');
-
     document.getElementById('btnPrevView').disabled = viewState.index === 0;
     document.getElementById('btnNextView').textContent =
       viewState.index === total - 1 ? '🏁 Завершить' : 'Вперёд →';
   }
-
   function flipCard() {
     if (!viewState) return;
     document.getElementById('flipCard').classList.toggle('flipped');
@@ -1611,7 +1392,6 @@
     else if (percent >= 80) { emoji = '🎉'; message = 'Отличный результат!'; }
     else if (percent >= 60) { emoji = '👍'; message = 'Хороший результат!'; }
     else if (percent >= 40) { emoji = '🤔'; message = 'Неплохо.'; }
-
     const panel = document.getElementById('viewPanel');
     panel.innerHTML = `
       <div class="test-summary">
@@ -1648,7 +1428,6 @@
 
   // ======================= ВИКТОРИНА =======================
   let quizState = null;
-
   function startQuizMode() {
     if (cards.length < 4) {
       alert('Для викторины нужно минимум 4 карточки!');
@@ -1659,15 +1438,12 @@
         ...card,
         type: Math.random() < 0.5 ? 'forward' : 'reverse'
       })),
-      index: 0,
-      score: 0,
-      answered: false
+      index: 0, score: 0, answered: false
     };
     showScreen('quizMode');
     renderQuizPanel();
     renderQuizQuestion();
   }
-
   function renderQuizPanel() {
     const panel = document.getElementById('quizPanel');
     panel.innerHTML = `
@@ -1681,7 +1457,6 @@
       <div class="quiz-subtitle" id="quizSubtitle">Выберите правильный ответ</div>
 
       <div class="quiz-options" id="quizOptions"></div>
-
       <div class="quiz-feedback" id="quizFeedback"></div>
 
       <div class="quiz-controls">
@@ -1697,16 +1472,13 @@
       nextQuizQuestion();
     });
   }
-
   function renderQuizQuestion() {
     if (!quizState) return;
     const card = quizState.queue[quizState.index];
     const total = quizState.queue.length;
     const isReverse = card.type === 'reverse';
-
     document.getElementById('quizProgress').textContent = `Вопрос ${quizState.index + 1} из ${total}`;
     document.getElementById('quizProgressBar').style.width = `${Math.round((quizState.index / total) * 100)}%`;
-
     const questionEl = document.getElementById('quizQuestion');
     if (isReverse) {
       questionEl.className = 'quiz-question prompt-reverse';
@@ -1720,17 +1492,14 @@
       questionEl.textContent = card.question;
       document.getElementById('quizSubtitle').textContent = 'Выберите правильный ответ';
     }
-
     const others = cards.filter(c => String(c.id) !== String(card.id));
     const shuffledOthers = shuffle(others);
     const wrongOptions = shuffledOthers.slice(0, 3);
-
     if (wrongOptions.length < 3) {
       document.getElementById('quizOptions').innerHTML =
         '<div class="empty" style="color:var(--text);">Для викторины нужно минимум 4 карточки.</div>';
       return;
     }
-
     const options = shuffle([card, ...wrongOptions]);
     const optionsEl = document.getElementById('quizOptions');
     optionsEl.innerHTML = '';
@@ -1748,32 +1517,25 @@
       btn.addEventListener('click', () => answerQuiz(btn, card));
       optionsEl.appendChild(btn);
     });
-
     const feedback = document.getElementById('quizFeedback');
     feedback.className = 'quiz-feedback';
     feedback.textContent = '';
-
     const nextBtn = document.getElementById('quizNextBtn');
     nextBtn.disabled = true;
     nextBtn.textContent = (quizState.index === total - 1) ? '🏁 Завершить' : '➡ Далее';
-
     document.getElementById('quizSkipBtn').disabled = false;
     quizState.answered = false;
   }
-
   function answerQuiz(btn, card) {
     if (quizState.answered) return;
     quizState.answered = true;
-
     const isCorrect = btn.dataset.correct === '1';
     const isReverse = card.type === 'reverse';
-
     document.querySelectorAll('.quiz-option').forEach(o => {
       o.disabled = true;
       if (o.dataset.correct === '1') o.classList.add('correct');
     });
     if (!isCorrect) btn.classList.add('wrong');
-
     const feedback = document.getElementById('quizFeedback');
     if (isCorrect) {
       feedback.className = 'quiz-feedback show ok';
@@ -1787,23 +1549,16 @@
       stats.incorrect++;
     }
     save(); updateStats();
-
     document.getElementById('quizNextBtn').disabled = false;
     document.getElementById('quizSkipBtn').disabled = true;
   }
-
   function nextQuizQuestion() {
     if (!quizState) return;
     const total = quizState.queue.length;
-
-    if (quizState.index >= total - 1) {
-      renderQuizSummary();
-      return;
-    }
+    if (quizState.index >= total - 1) { renderQuizSummary(); return; }
     quizState.index++;
     renderQuizQuestion();
   }
-
   function renderQuizSummary() {
     const total = quizState.queue.length;
     const percent = Math.round(quizState.score / total * 100);
@@ -1812,7 +1567,6 @@
     else if (percent >= 80) { emoji = '🎉'; message = 'Отличный результат!'; }
     else if (percent >= 60) { emoji = '👍'; message = 'Хороший результат!'; }
     else if (percent >= 40) { emoji = '🤔'; message = 'Неплохо.'; }
-
     const panel = document.getElementById('quizPanel');
     panel.innerHTML = `
       <div class="test-summary">
@@ -1827,12 +1581,10 @@
       </div>
     `;
     panel.querySelector('#quizRestartBtn').addEventListener('click', () => {
-      quizState = null;
-      startQuizMode();
+      quizState = null; startQuizMode();
     });
     panel.querySelector('#quizExitBtn').addEventListener('click', exitQuizMode);
   }
-
   function exitQuizMode() {
     quizState = null;
     showScreen('homeMode');
@@ -1842,14 +1594,12 @@
 
   // ======================= ТЕСТ =======================
   const modal = document.getElementById('testSetupModal');
-
   document.getElementById('btnTestMode').addEventListener('click', () => {
     if (cards.length === 0) { alert('Сначала добавьте хотя бы одну карточку!'); return; }
     loadTimerSettings();
     modal.classList.add('active');
     lockBodyScroll(true);
   });
-
   function loadTimerSettings() {
     try {
       const s = JSON.parse(localStorage.getItem(TIMER_KEY));
@@ -1908,31 +1658,23 @@
   });
 
   let test = null;
-
   function startTest(config) {
     stopTimer();
     const queue = shuffle(cards).map(card => ({
       ...card,
       type: Math.random() < 0.5 ? 'forward' : 'reverse'
     }));
-
     test = {
-      queue,
-      index: 0,
-      answers: [],
-      finished: false,
-      checked: false,
+      queue, index: 0, answers: [], finished: false, checked: false,
       timerConfig: config,
       totalRemaining: config.mode === 'total' ? config.totalMinutes * 60 : null,
       questionRemaining: config.mode === 'perQuestion' ? config.perQuestionSeconds : null,
-      intervalId: null,
-      questionTimedOut: false
+      intervalId: null, questionTimedOut: false
     };
     showScreen('testMode');
     renderTest();
     startTimer();
   }
-
   function startTimer() {
     if (!test || test.timerConfig.mode === 'none') return;
     test.intervalId = setInterval(tickTimer, 1000);
@@ -1996,25 +1738,21 @@
     test.timeoutReason = 'total';
     renderTest();
   }
-
   function renderTest() {
     const panel = document.getElementById('testPanel');
     if (!test) return;
     if (test.finished) { renderTestSummary(panel); return; }
-
     const card = test.queue[test.index];
     const total = test.queue.length;
     const progress = Math.round((test.index / total) * 100);
     const mode = test.timerConfig.mode;
     const isReverse = card.type === 'reverse';
-
     let timerHtml = '';
     if (mode === 'total') {
       timerHtml = `<div class="timer-display" id="timerDisplay"><span class="timer-icon">⏱</span><span class="timer-value">${formatTime(test.totalRemaining)}</span></div>`;
     } else if (mode === 'perQuestion') {
       timerHtml = `<div class="timer-display" id="timerDisplay"><span class="timer-icon">⏳</span><span class="timer-value">${formatTime(test.questionRemaining)}</span></div>`;
     }
-
     let questionBlock = '';
     if (isReverse) {
       questionBlock = `
@@ -2029,7 +1767,6 @@
     } else {
       questionBlock = `<div class="test-question">${escapeHtml(card.question)}</div>`;
     }
-
     panel.innerHTML = `
       <div class="test-header">
         <div class="test-progress-text">Вопрос ${test.index + 1} из ${total}</div>
@@ -2043,10 +1780,8 @@
       <div class="test-result" id="testResult"></div>
       <div class="test-controls" id="testControls"></div>
     `;
-
     const controls = panel.querySelector('#testControls');
     const resultEl = panel.querySelector('#testResult');
-
     if (!test.checked) {
       controls.innerHTML = `<button id="testCheckBtn">✅ Проверить</button>`;
       panel.querySelector('#testCheckBtn').addEventListener('click', checkTestAnswer);
@@ -2077,30 +1812,21 @@
       controls.innerHTML = `<button id="testNextBtn">${isLast ? '🏁 Завершить' : '➡ Далее'}</button>`;
       panel.querySelector('#testNextBtn').addEventListener('click', nextTestQuestion);
     }
-
     panel.querySelector('#exitTestBtn').addEventListener('click', () => {
       if (confirm('Прервать тест? Результат не сохранится.')) exitTest();
     });
-
     updateTimerDisplay();
   }
-
   function checkTestAnswer() {
     const panel = document.getElementById('testPanel');
     const ta = panel.querySelector('#testAnswer');
     const answer = ta.value;
     if (!answer.trim()) { alert('Введите ответ!'); return; }
-
     const card = test.queue[test.index];
     const isReverse = card.type === 'reverse';
-
     let isCorrect;
-    if (isReverse) {
-      isCorrect = softMatch(answer, card.question);
-    } else {
-      isCorrect = normalize(answer) === normalize(card.answer);
-    }
-
+    if (isReverse) isCorrect = softMatch(answer, card.question);
+    else isCorrect = normalize(answer) === normalize(card.answer);
     test.answers.push({ id: card.id, user: answer, correct: isCorrect, type: card.type });
     test.checked = true;
     if (isCorrect) stats.correct++; else stats.incorrect++;
@@ -2108,7 +1834,6 @@
     if (document.activeElement) document.activeElement.blur();
     renderTest();
   }
-
   function nextTestQuestion() {
     test.checked = false;
     test.questionTimedOut = false;
@@ -2123,47 +1848,39 @@
     }
     renderTest();
   }
-
   function renderTestSummary(panel) {
     stopTimer();
     const total = test.answers.length;
     const correct = test.answers.filter(a => a.correct).length;
     const skipped = test.answers.filter(a => a.skipped).length;
     const percent = total ? Math.round(correct / total * 100) : 0;
-
     let emoji = '😢', message = 'Попробуйте ещё раз!';
     if (percent === 100) { emoji = '🏆'; message = 'Идеальный результат!'; }
     else if (percent >= 80) { emoji = '🎉'; message = 'Отличный результат!'; }
     else if (percent >= 60) { emoji = '👍'; message = 'Хороший результат!'; }
     else if (percent >= 40) { emoji = '🤔'; message = 'Неплохо, но есть куда расти.'; }
-
     let timeoutBanner = '';
     if (test.timeoutReason === 'total') {
       timeoutBanner = '<div class="test-result timeout" style="display:block; text-align:left; margin-bottom: 18px;">⏰ <strong>Время теста истекло!</strong> Оставшиеся вопросы засчитаны как пропущенные.</div>';
     }
-
     let modeInfo = '';
     if (test.timerConfig.mode === 'total') modeInfo = `⏱ Режим: общее время (${test.timerConfig.totalMinutes} мин)`;
     else if (test.timerConfig.mode === 'perQuestion') modeInfo = `⏳ Режим: ${test.timerConfig.perQuestionSeconds} сек на вопрос`;
     else modeInfo = '🚫 Без таймера';
-
     const reviewHtml = test.answers.map((a, i) => {
       const card = test.queue[i];
       const isReverse = card.type === 'reverse';
       const cls = a.skipped ? 'skip' : (a.correct ? 'ok' : 'bad');
       const userText = a.skipped ? '⏰ пропущено (время вышло)' : escapeHtml(a.user);
-
       const typeTag = isReverse
         ? '<span class="type-tag">🔄 обратный</span>'
         : '<span class="type-tag">➡ прямой</span>';
-
       const questionLine = isReverse
         ? `Ответ: ${escapeHtml(card.answer)}`
         : escapeHtml(card.question);
       const correctLine = isReverse
         ? `Исходное задание: ${escapeHtml(card.question)}`
         : `Правильно: ${escapeHtml(card.answer)}`;
-
       return `
         <div class="review-item ${cls}">
           <div class="q">${i + 1}. ${typeTag} ${questionLine}</div>
@@ -2172,7 +1889,6 @@
         </div>
       `;
     }).join('');
-
     panel.innerHTML = `
       <div class="test-summary">
         <div style="font-size: 50px; margin-bottom: 10px;">${emoji}</div>
@@ -2204,15 +1920,400 @@
     });
     panel.querySelector('#finishTestBtn').addEventListener('click', exitTest);
   }
-
   function exitTest(keepGoing) {
     stopTimer();
     test = null;
-    if (!keepGoing) {
-      showScreen('homeMode');
-      render();
+    if (!keepGoing) { showScreen('homeMode'); render(); }
+  }
+
+  // ============================================================
+  // ============== SHARE: Обмен наборами ======================
+  // ============================================================
+  // Формат кода: "QC1." + base64url(gzip(JSON))
+  // Если CompressionStream недоступен — падаем на простой base64url(JSON).
+
+  function toBase64Url(bytes) {
+    let bin = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function fromBase64Url(str) {
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (str.length % 4) str += '=';
+    const bin = atob(str);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes;
+  }
+  async function gzip(str) {
+    if (typeof CompressionStream === 'undefined') return null;
+    try {
+      const cs = new CompressionStream('gzip');
+      const writer = cs.writable.getWriter();
+      writer.write(new TextEncoder().encode(str));
+      writer.close();
+      const chunks = [];
+      const reader = cs.readable.getReader();
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+      }
+      const totalLen = chunks.reduce((s, c) => s + c.length, 0);
+      const out = new Uint8Array(totalLen);
+      let off = 0;
+      for (const c of chunks) { out.set(c, off); off += c.length; }
+      return out;
+    } catch (e) { return null; }
+  }
+  async function gunzip(bytes) {
+    if (typeof DecompressionStream === 'undefined') return null;
+    try {
+      const ds = new DecompressionStream('gzip');
+      const writer = ds.writable.getWriter();
+      writer.write(bytes);
+      writer.close();
+      const chunks = [];
+      const reader = ds.readable.getReader();
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+      }
+      const totalLen = chunks.reduce((s, c) => s + c.length, 0);
+      const out = new Uint8Array(totalLen);
+      let off = 0;
+      for (const c of chunks) { out.set(c, off); off += c.length; }
+      return new TextDecoder().decode(out);
+    } catch (e) { return null; }
+  }
+
+  // Упаковка карточек в код
+  async function packCards(cardList) {
+    // Компактный формат: массив [question, answer]
+    const compact = cardList.map(c => [c.question, c.answer]);
+    const json = JSON.stringify(compact);
+    const gz = await gzip(json);
+    if (gz) return 'QC1.' + toBase64Url(gz);
+    // fallback: без сжатия, префикс QC0
+    return 'QC0.' + toBase64Url(new TextEncoder().encode(json));
+  }
+
+  // Распаковка кода
+  async function unpackCards(code) {
+    code = code.trim();
+    // Убираем возможный URL, оставляем только фрагмент #data=...
+    const m = code.match(/[#&?]d(?:ata)?=([A-Za-z0-9\-_]+)/);
+    if (m) code = m[1];
+    // Если это полная ссылка с #qc=...
+    const m2 = code.match(/#qc=([A-Za-z0-9\-_\.]+)/);
+    if (m2) code = m2[1];
+
+    if (code.startsWith('QC1.')) {
+      const bytes = fromBase64Url(code.slice(4));
+      const json = await gunzip(bytes);
+      if (!json) throw new Error('Не удалось распаковать (нет поддержки gzip)');
+      return JSON.parse(json);
+    }
+    if (code.startsWith('QC0.')) {
+      const bytes = fromBase64Url(code.slice(4));
+      const json = new TextDecoder().decode(bytes);
+      return JSON.parse(json);
+    }
+    // Пробуем как чистый base64url (без префикса)
+    try {
+      const bytes = fromBase64Url(code);
+      const json = new TextDecoder().decode(bytes);
+      return JSON.parse(json);
+    } catch (e) {
+      throw new Error('Неверный формат кода');
     }
   }
+
+  // Приводим к массиву объектов {question, answer}
+  function normalizeImported(raw) {
+    if (!Array.isArray(raw)) throw new Error('Ожидался массив карточек');
+    const result = [];
+    for (const item of raw) {
+      if (Array.isArray(item) && item.length >= 2) {
+        const q = String(item[0] || '').trim();
+        const a = String(item[1] || '').trim();
+        if (q && a) result.push({ question: q, answer: a });
+      } else if (item && typeof item === 'object') {
+        const q = String(item.question || item.q || '').trim();
+        const a = String(item.answer || item.a || '').trim();
+        if (q && a) result.push({ question: q, answer: a });
+      }
+    }
+    return result;
+  }
+
+  // Добавление импортированных карточек с защитой от дубликатов
+  function mergeImported(imported) {
+    let added = 0, skipped = 0;
+    const existingKeys = new Set(cards.map(c => normalize(c.question) + '|' + normalize(c.answer)));
+    for (const item of imported) {
+      const key = normalize(item.question) + '|' + normalize(item.answer);
+      if (existingKeys.has(key)) { skipped++; continue; }
+      cards.push({ id: Date.now() + Math.random() + added, question: item.question, answer: item.answer });
+      existingKeys.add(key);
+      added++;
+    }
+    if (added > 0) { save(); render(); }
+    return { added, skipped };
+  }
+
+  // ============ UI режима "Поделиться" ============
+  function startShareMode() {
+    showScreen('shareMode');
+    renderSharePanel();
+  }
+  function renderSharePanel() {
+    const panel = document.getElementById('sharePanel');
+    const cardCount = cards.length;
+
+    panel.innerHTML = `
+      <div class="test-header" style="margin-bottom: 12px;">
+        <div class="test-progress-text">📤 Поделиться набором</div>
+        <button class="secondary" id="exitShareBtn" style="width: auto; padding: 10px 14px; font-size: 14px;">✖ Выйти</button>
+      </div>
+
+      <div class="share-info">
+        ${cardCount === 0
+          ? 'У вас пока нет карточек для отправки.'
+          : `В наборе <strong>${cardCount}</strong> ${pluralCards(cardCount)}. Отправьте ссылку — получатель откроет её и импортирует карточки.`}
+      </div>
+
+      <div class="share-buttons" style="margin-bottom: 14px;">
+        <button id="generateLinkBtn" ${cardCount === 0 ? 'disabled' : ''}>🔗 Создать ссылку</button>
+        <button class="secondary" id="exportFileBtn" ${cardCount === 0 ? 'disabled' : ''}>💾 Скачать JSON</button>
+      </div>
+
+      <div id="shareResultBlock"></div>
+
+      <hr style="border:none; border-top:1px dashed var(--border); margin: 22px 0;">
+
+      <h3 style="font-size: 16px; margin-bottom: 10px; color: var(--text);">📥 Импорт карточек</h3>
+      <div class="share-info" style="text-align: left; margin-bottom: 12px;">
+        Вставьте ссылку или код ниже, либо загрузите JSON-файл.
+      </div>
+
+      <textarea id="importInput" placeholder="Вставьте ссылку (https://...#qc=...) или код QC1.…" rows="4"
+                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                style="margin-bottom: 12px; font-family: monospace; font-size: 13px;"></textarea>
+
+      <div class="share-buttons">
+        <button id="importFromTextBtn">📥 Импортировать из кода</button>
+        <button class="secondary" id="importFromFileBtn">📂 Из файла</button>
+      </div>
+      <input type="file" id="importFileInput" accept=".json,application/json" style="display: none;">
+    `;
+
+    document.getElementById('exitShareBtn').addEventListener('click', exitShareMode);
+    document.getElementById('generateLinkBtn').addEventListener('click', generateShareLink);
+    document.getElementById('exportFileBtn').addEventListener('click', exportToFile);
+    document.getElementById('importFromTextBtn').addEventListener('click', importFromText);
+    document.getElementById('importFromFileBtn').addEventListener('click', () => {
+      document.getElementById('importFileInput').click();
+    });
+    document.getElementById('importFileInput').addEventListener('change', importFromFile);
+
+    // Если в URL есть параметр — предложим сразу импортировать
+    checkUrlForImport();
+  }
+
+  function pluralCards(n) {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'карточка';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'карточки';
+    return 'карточек';
+  }
+
+  async function generateShareLink() {
+    const resultBlock = document.getElementById('shareResultBlock');
+    resultBlock.innerHTML = '<div class="share-info">⏳ Формируем ссылку…</div>';
+
+    try {
+      const code = await packCards(cards);
+      const baseUrl = location.origin + location.pathname;
+      const shareUrl = `${baseUrl}#qc=${code}`;
+      const sizeKb = (shareUrl.length / 1024).toFixed(1);
+
+      // Генерируем QR через внешний сервис (не требует интернета на клиенте)
+      // Используем quickchart.io — простой и стабильный
+      const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(shareUrl)}&size=260&margin=1&ecLevel=L`;
+
+      resultBlock.innerHTML = `
+        <div class="qr-container">
+          <img src="${qrUrl}" alt="QR-код" width="260" height="260"
+               onerror="this.style.display='none'; this.parentNode.querySelector('.qr-fallback').style.display='block'">
+          <div class="qr-fallback" style="display:none; text-align:center; color:#666; font-size:13px;">
+            QR-код недоступен (нет интернета).<br>Скопируйте ссылку ниже.
+          </div>
+        </div>
+        <div class="share-info">📏 Размер ссылки: <strong>${sizeKb} КБ</strong>. Отсканируйте QR-код или отправьте ссылку.</div>
+        <div class="share-link-box" id="shareLinkText">${escapeHtml(shareUrl)}</div>
+        <div class="share-buttons">
+          <button id="nativeShareBtn">📤 Поделиться</button>
+          <button class="secondary" id="copyLinkBtn">📋 Копировать</button>
+        </div>
+      `;
+
+      document.getElementById('nativeShareBtn').addEventListener('click', async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: 'Набор карточек',
+              text: `Набор из ${cards.length} ${pluralCards(cards.length)}`,
+              url: shareUrl
+            });
+          } catch (e) { /* отменено */ }
+        } else {
+          copyText(shareUrl);
+        }
+      });
+      document.getElementById('copyLinkBtn').addEventListener('click', () => {
+        copyText(shareUrl);
+      });
+    } catch (e) {
+      resultBlock.innerHTML = `<div class="share-info" style="color: var(--error);">❌ Не удалось создать ссылку: ${escapeHtml(e.message)}</div>`;
+    }
+  }
+
+  async function copyText(text) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      toast('✅ Скопировано в буфер');
+    } catch (e) {
+      toast('⚠ Не удалось скопировать');
+    }
+  }
+
+  function toast(message) {
+    const div = document.createElement('div');
+    div.textContent = message;
+    div.style.cssText = `
+      position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+      left: 50%; transform: translateX(-50%);
+      background: var(--surface); color: var(--text);
+      padding: 12px 20px; border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      font-size: 14px; font-weight: 600; z-index: 3000;
+      animation: slideUp 0.25s ease;
+    `;
+    document.body.appendChild(div);
+    setTimeout(() => { div.style.opacity = '0'; div.style.transition = 'opacity 0.3s'; }, 1800);
+    setTimeout(() => div.remove(), 2200);
+  }
+
+  function exportToFile() {
+    const json = JSON.stringify(cards.map(c => ({ question: c.question, answer: c.answer })), null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const date = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `cards-${date}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast('💾 Файл сохранён');
+  }
+
+  async function importFromText() {
+    const ta = document.getElementById('importInput');
+    let text = ta.value.trim();
+    if (!text) { alert('Вставьте ссылку или код'); return; }
+    try {
+      const raw = await unpackCards(text);
+      const imported = normalizeImported(raw);
+      if (imported.length === 0) { alert('В наборе нет карточек'); return; }
+      const { added, skipped } = mergeImported(imported);
+      toast(`✅ Добавлено: ${added}${skipped ? `, пропущено (дубликаты): ${skipped}` : ''}`);
+      ta.value = '';
+      // Перерисовываем панель, чтобы обновилось количество
+      renderSharePanel();
+    } catch (e) {
+      alert('❌ Не удалось распознать код: ' + e.message);
+    }
+  }
+
+  function importFromFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const raw = JSON.parse(reader.result);
+        const imported = normalizeImported(raw);
+        if (imported.length === 0) { alert('В файле нет карточек'); return; }
+        const { added, skipped } = mergeImported(imported);
+        toast(`✅ Добавлено: ${added}${skipped ? `, пропущено (дубликаты): ${skipped}` : ''}`);
+        renderSharePanel();
+      } catch (err) {
+        alert('❌ Ошибка чтения файла: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+
+  async function checkUrlForImport() {
+    const hash = location.hash;
+    const m = hash.match(/#qc=([A-Za-z0-9\-_\.]+)/);
+    if (!m) return;
+    const code = m[1];
+    // Спросим пользователя
+    setTimeout(async () => {
+      if (!confirm('Найдены карточки в ссылке. Импортировать?')) {
+        history.replaceState(null, '', location.pathname);
+        return;
+      }
+      try {
+        const raw = await unpackCards(code);
+        const imported = normalizeImported(raw);
+        if (imported.length === 0) { alert('В ссылке нет карточек'); return; }
+        const { added, skipped } = mergeImported(imported);
+        toast(`✅ Добавлено: ${added}${skipped ? `, пропущено: ${skipped}` : ''}`);
+        history.replaceState(null, '', location.pathname);
+        renderSharePanel();
+      } catch (e) {
+        alert('❌ Не удалось распознать ссылку: ' + e.message);
+      }
+    }, 300);
+  }
+
+  function exitShareMode() {
+    // Убираем хэш из URL, если он там был
+    if (location.hash.startsWith('#qc=')) history.replaceState(null, '', location.pathname);
+    showScreen('homeMode');
+    render();
+  }
+  document.getElementById('btnShareMode').addEventListener('click', startShareMode);
+
+  // Проверяем URL при загрузке тоже
+  window.addEventListener('load', () => {
+    if (location.hash.startsWith('#qc=')) {
+      startShareMode();
+    }
+  });
 
   // ======================= ИНИЦИАЛИЗАЦИЯ =======================
   load();
